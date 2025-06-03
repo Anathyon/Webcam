@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webcam</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body class="alt_modo">
+   <header id="cabecalho">
+        <img src="./imagens/1-removebg-preview.png" draggable="false" alt="img_logo" id="img_hedd">
+        <nav id="menu_nav">  
+          <section id="btns">  
+               <button id="bt_tirar_foto" class="es_btn">
+                  <img src="./svg/camera.svg" alt="icon_tirar_foto" draggable="false" id="it_foto">
+               </button>
+               <button id="rmv_ft" class="es_btn">
+                  <img src="./svg/trash.svg" alt="icon_apagar_foto" draggable="false" id="lx_foto">
+               </button>
+               <button id="bx_ft" class="es_btn"> 
+                  <img src="svg/download.svg" alt="icon_download" draggable="false" id="down_ft">
+                  </button>
+               <button id="modo_luz_escuridao" class="es_btn">
+                  <img src="./svg/sun-svgrepo-com.svg" alt="icon_modos" draggable="false" id="alterador">
+               </button>
+            </section>
+            <!-- <ul id="ul_nav"></ul> 
+              <li> 
+                   <a href="#fim">FINAL</a>
+              </li>
+           </ul> -->
+   </nav>
+   </header>
+   <main>
+   <section id="tag_video">
+        <video autoplay id="vid"></video>
+        <canvas id="canv"> 
+        </canvas>
+    </section>
+   </main>
+   <script src="./script/index.js"></script>  
+</body>
+</html>

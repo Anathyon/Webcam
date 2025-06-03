@@ -1,0 +1,171 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+:root {    
+    --hedd--color: #000000c5;
+    --bg--url: url(./imagens/Sua\ camera.png);    
+    --btbg--color: #ffffffbe;
+}
+.alt_modo{
+    --hedd--color: #ffffff8f;
+    --bg--url: url(./imagens/image.png);
+    --btbg--color: #000000;
+    }
+
+body {
+    height: 100vh;
+    width: 100vw;
+    background: var(--bg--url) no-repeat center center/cover;
+    overflow: hidden;
+    font-weight: bold;
+    font-family: "Barlow", sans-serif;
+    font-weight: 100;
+    font-style: normal;
+}
+
+main {
+    width: 90vw;
+    height: 85vh;
+    margin: 6vh 5vw;
+    display: flex;
+}
+
+#tag_video {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%; 
+    height: 90%; 
+    gap: 2rem;
+}
+
+#vid {
+    width: 90%; 
+    height: 90%; 
+    object-fit: cover; 
+    object-position: center; 
+}
+
+#canv {
+    width: 90%; 
+    height: 90%; 
+    object-fit: cover; 
+    object-position: center; 
+}
+#btns{
+    display: flex;
+    flex-direction: row;  
+    width: 100vh;
+    position: relative;
+    gap: 2rem;
+    left: 4rem;
+    top: 0.4rem;
+}
+.es_btn {
+    padding: 1vh;
+    font-size: 1vw;
+    border-radius: 50%;
+    height: 10vh;
+    width: 10vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--btbg--color) !important;
+}
+#cabecalho{
+    display: flex;
+    position: relative;
+    background-color: var(--hedd--color);
+    padding: 0.5vh;
+}
+#img_hedd{
+    width: 5rem;
+    height:5rem;
+    position: relative;
+    left: 7vh;
+}
+#ul_nav{
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    justify-content: space-between;
+    color:#ffffff;
+}
+
+@media (min-width: 249px) and (max-width: 480px) {
+    body {
+        font-size: 0.8rem;
+        background-size: cover;
+        background-repeat: repeat-y;
+    }
+    #cabecalho{
+        width: 100vh;
+    }
+    #tag_video {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    #vid, #canv {
+        width: 100%;
+        height: 40vh;
+    }
+    #btns {
+        gap: 1rem;
+        width: 90vw;
+        justify-content: space-around;
+    }
+    .es_btn {
+        width: 8vh;
+        height: 8vh;
+    }
+}
+@media (min-width: 481px) and (max-width: 1024px) {
+    body {
+        font-size: 1rem;
+        background-repeat: repeat-y;
+    }
+    #cabecalho {
+        width: 100vh;
+    }
+    #tag_video {
+        flex-direction: row;
+        gap: 1.5rem;
+    }
+    #vid, #canv {
+        width: 48%;
+        height: 50vh;
+    }
+    #btns {
+        width: 80vw;
+        gap: 1rem;
+    }
+    .es_btn {
+        width: 9vh;
+        height: 9vh;
+    }
+}
+@media screen and (min-width: 1024px) {
+    body {
+        font-size: 1.2rem;
+    }
+    #vid, #canv {
+        width: 90%;
+        height: 70vh;
+    }
+    #btns {
+        width: 70vw;
+        gap: 2rem;
+    }
+    .es_btn {
+        width: 10vh;
+        height: 10vh;
+    }
+}
+@media (hover: none) and (pointer: coarse) {
+    .es_btn {
+      touch-action: manipulation;
+    }
+  }
+  
