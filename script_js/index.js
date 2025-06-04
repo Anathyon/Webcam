@@ -13,9 +13,18 @@ const lx_foto = document.querySelector("#lx_foto");
 const down_ft = document.querySelector("#down_ft");
 const body = document.querySelector("body");
 const alterador = document.querySelector("#alterador");
+const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+if (isTouchDevice) {
+    document.body.classList.add("modo_touch");
+}
+document.body.addEventListener("touchstart", (e) => {
+    if (e.target instanceof HTMLButtonElement) {
+        e.preventDefault();
+    }
+}, { passive: false });
 async function obter_cam() {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        return alert("Seu navegador não tem suorte para mídia");
+        return alert("Seu navegador não tem suporte para mídia.");
     }
     try {
         const midia = await navigator.mediaDevices.getUserMedia({
@@ -27,29 +36,32 @@ async function obter_cam() {
     }
     catch (error) {
         console.error("ACESSO NEGADO", error);
-        alert("Não foi possível acessar a câmera. Verifique as permissões do seu navegador.");
+        alert("Não foi possível acessar a câmera. Verifique as permissões do navegador.");
     }
 }
 document.addEventListener("DOMContentLoaded", obter_cam);
-function func_t_ft() {
+const func_t_ft = () => {
     canvas.height = t_video.videoHeight;
     canvas.width = t_video.videoWidth;
     const context = canvas.getContext("2d");
     if (context) {
-        context.drawImage(t_video, 0, 0, canvas.width, canvas.height);
+        requestAnimationFrame(() => {
+            context.drawImage(t_video, 0, 0, canvas.width, canvas.height);
+        });
+        if ("vibrate" in navigator) {
+            navigator.vibrate(100);
+        }
+        body.classList.add("flash");
+        setTimeout(() => body.classList.remove("flash"), 150);
     }
-}
-tirar_foto.addEventListener("click", func_t_ft);
-tirar_foto.addEventListener("touchstart", func_t_ft);
-function func_remv_ft() {
+};
+const func_remv_ft = () => {
     const clear = canvas.getContext("2d");
     if (clear) {
         clear.clearRect(0, 0, canvas.width, canvas.height);
     }
-}
-rmv_ft.addEventListener("click", func_remv_ft);
-tirar_foto.addEventListener("touchstart", func_remv_ft);
-function func_rende_ft() {
+};
+const func_rende_ft = () => {
     const context = canvas.getContext("2d");
     if (context) {
         const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
@@ -62,37 +74,37 @@ function func_rende_ft() {
             }
         }
         if (isCanvasEmpty) {
-            alert("Você não tirou nenhuma foto");
-            console.error("Você não tirou nenhuma foto");
+            alert("Você não tirou nenhuma foto.");
+            console.error("Você não tirou nenhuma foto.");
         }
         else {
             const download = document.createElement("a");
             download.href = canvas.toDataURL();
-            download.download = "suafoto.png";
+            download.download = `foto_${Date.now()}.png`;
             download.click();
         }
     }
-}
-bx_ft.addEventListener("click", func_rende_ft);
-tirar_foto.addEventListener("touchstart", func_rende_ft);
-function func_alt_modo() {
+};
+const func_alt_modo = () => {
     alt_modo.classList.toggle("alt_modo");
     const modoescuro = body.classList.contains("alt_modo");
     if (modoescuro) {
-        img_hedd.src = "./imagens/1-removebg-preview.png";
-        it_foto.src = "./svg/camera.svg";
-        lx_foto.src = "./svg/trash.svg";
-        down_ft.src = "./svg/download.svg";
-        alterador.src = "./svg/sun-svgrepo-com.svg";
+        img_hedd.src = "./CSS/imagens/1-removebg-preview.png";
+        it_foto.src = "./CSS/svg/camera.svg";
+        lx_foto.src = "./CSS/svg/trash.svg";
+        down_ft.src = "./CSS/svg/download.svg";
+        alterador.src = "./CSS/svg/sun-svgrepo-com.svg";
     }
     else {
-        img_hedd.src = "./imagens/2-removebg-preview.png";
-        it_foto.src = "./svg/cam-svgrepo-com.svg";
-        lx_foto.src = "./svg/trash-svgrepo-com.svg";
-        down_ft.src = "./svg/download-cloud-svgrepo-com.svg";
-        alterador.src = "./svg/moon-stars-svgrepo-com.svg";
+        img_hedd.src = "./CSS/imagens/2-removebg-preview.png";
+        it_foto.src = "./CSS/svg/cam-svgrepo-com.svg";
+        lx_foto.src = "./CSS/svg/trash-svgrepo-com.svg";
+        down_ft.src = "./CSS/svg/download-cloud-svgrepo-com.svg";
+        alterador.src = "./CSS/svg/moon-stars-svgrepo-com.svg";
     }
-}
-modo_luz_escuridao.addEventListener("click", func_alt_modo);
-modo_luz_escuridao.addEventListener("touchstart", func_alt_modo);
+};
+tirar_foto.addEventListener("pointerdown", func_t_ft);
+rmv_ft.addEventListener("pointerdown", func_remv_ft);
+bx_ft.addEventListener("pointerdown", func_rende_ft);
+modo_luz_escuridao.addEventListener("pointerdown", func_alt_modo);
 vid.disablePictureInPicture = true;

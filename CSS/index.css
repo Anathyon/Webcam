@@ -12,23 +12,31 @@
     --hedd--color: #ffffff8f;
     --bg--url: url(./imagens/image.png);
     --btbg--color: #000000;
-    }
+}
 
 body {
-    height: 100vh;
-    width: 100vw;
     background: var(--bg--url) no-repeat center center/cover;
-    overflow: hidden;
+    background-attachment: fixed;
     font-weight: bold;
     font-family: "Barlow", sans-serif;
     font-weight: 100;
     font-style: normal;
 }
 
-main {
-    width: 90vw;
-    height: 85vh;
-    margin: 6vh 5vw;
+#it_foto{
+    touch-action: manipulation;
+}
+
+.sty_cam_ft{
+    border-radius: 1.2rem;
+}
+
+#cont_principal {
+    position: relative;
+    left: 5%;
+    margin-top: 2%;
+    width: 90dvw;
+    height: 80dvh;
     display: flex;
 }
 
@@ -73,12 +81,16 @@ main {
     justify-content: center;
     align-items: center;
     background-color: var(--btbg--color) !important;
+    border: none;
 }
 #cabecalho{
+    margin-top: 0%;
+    width: 100dvw;
     display: flex;
     position: relative;
     background-color: var(--hedd--color);
-    padding: 0.5vh;
+    padding: 0.5dvh;
+    border-radius: 1rem  ;
 }
 #img_hedd{
     width: 5rem;
@@ -94,6 +106,15 @@ main {
     color:#ffffff;
 }
 
+.flash {
+    animation: flash-effect 0.15s ease;
+}
+
+@keyframes flash-effect {
+    from { background-color: rgba(255, 255, 255, 0.6); }
+    to { background-color: transparent; }
+}
+
 @media (min-width: 249px) and (max-width: 480px) {
     body {
         font-size: 0.8rem;
@@ -101,7 +122,7 @@ main {
         background-repeat: repeat-y;
     }
     #cabecalho{
-        width: 100vh;
+        width: 100dvw;
     }
     #tag_video {
         flex-direction: column;
@@ -127,7 +148,7 @@ main {
         background-repeat: repeat-y;
     }
     #cabecalho {
-        width: 100vh;
+        width: 100dvw;
     }
     #tag_video {
         flex-direction: row;
