@@ -1,192 +1,165 @@
+@import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css');
+
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-:root {    
-    --hedd--color: #000000c5;
-    --bg--url: url(./imagens/Sua\ camera.png);    
-    --btbg--color: #ffffffbe;
-}
-.alt_modo{
-    --hedd--color: #ffffff8f;
-    --bg--url: url(./imagens/image.png);
-    --btbg--color: #000000;
+
+:root {
+  --header-bg: #000000c5;
+  --alt-header-bg: #ffffff8f;
+  --bg-url: url(./imagens/Sua\ camera.png);
+  --alt-bg-url: url(./imagens/image.png);
+  --btn-bg: #ffffffbe;
+  --alt-btn-bg: #000000;
+  --font-family: "Barlow", sans-serif;
 }
 
 body {
-    background: var(--bg--url) no-repeat center center/cover;
-    background-attachment: fixed;
-    font-weight: bold;
-    font-family: "Barlow", sans-serif;
-    font-weight: 100;
-    font-style: normal;
+  background: var(--bg-url) no-repeat center center/cover;
+  background-attachment: fixed;
+  font-family: var(--font-family);
+  font-weight: 100;
+  color: #fff;
+  height: 100vh;
+  overflow: hidden;
 }
 
-#it_foto{
-    touch-action: manipulation;
+.alt_modo {
+  --header-bg: var(--alt-header-bg);
+  --bg-url: var(--alt-bg-url);
+  --btn-bg: var(--alt-btn-bg);
 }
 
-.sty_cam_ft{
-    border-radius: 1.2rem;
+#cabecalho {
+  background-color: var(--header-bg);
+  display: flex;
+  align-items: center;
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  gap: 1rem;
+}
+
+#img_hedd {
+  width: 4rem;
+  height: 4rem;
+}
+
+#ul_nav {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+  margin-left: auto;
+  color: white;
 }
 
 #cont_principal {
-    position: relative;
-    left: 5%;
-    margin-top: 2%;
-    width: 90dvw;
-    height: 80dvh;
-    display: flex;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1rem auto;
+  width: 95vw;
+  height: auto;
 }
 
 #tag_video {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%; 
-    height: 90%; 
-    gap: 2rem;
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-#vid {
-    width: 90%; 
-    height: 90%; 
-    object-fit: cover; 
-    object-position: center; 
-}
-
+#vid,
 #canv {
-    width: 90%; 
-    height: 90%; 
-    object-fit: cover; 
-    object-position: center; 
+  width: 45%;
+  height: 60vh;
+  object-fit: cover;
+  border-radius: 1rem;
+  box-shadow: 0 0 10px #0000005e;
 }
-#btns{
-    display: flex;
-    flex-direction: row;  
-    width: 100vh;
-    position: relative;
-    gap: 2rem;
-    left: 4rem;
-    top: 0.4rem;
+
+.sty_cam_ft {
+  border-radius: 1.2rem;
 }
+
+#btns {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
 .es_btn {
-    padding: 1vh;
-    font-size: 1vw;
-    border-radius: 50%;
-    height: 10vh;
-    width: 10vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--btbg--color) !important;
-    border: none;
-}
-#cabecalho{
-    margin-top: 0%;
-    width: 100dvw;
-    display: flex;
-    position: relative;
-    background-color: var(--hedd--color);
-    padding: 0.5dvh;
-    border-radius: 1rem  ;
-}
-#img_hedd{
-    width: 5rem;
-    height:5rem;
-    position: relative;
-    left: 7vh;
-}
-#ul_nav{
-    display: flex;
-    flex-direction: row;
-    position: relative;
-    justify-content: space-between;
-    color:#ffffff;
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 50%;
+  background-color: var(--btn-bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
-.flash {
-    animation: flash-effect 0.15s ease;
+.es_btn:hover {
+  transform: scale(1.1);
 }
 
-@keyframes flash-effect {
-    from { background-color: rgba(255, 255, 255, 0.6); }
-    to { background-color: transparent; }
+#it_foto {
+  touch-action: manipulation;
 }
 
-@media (min-width: 249px) and (max-width: 480px) {
-    body {
-        font-size: 0.8rem;
-        background-size: cover;
-        background-repeat: repeat-y;
-    }
-    #cabecalho{
-        width: 100dvw;
-    }
-    #tag_video {
-        flex-direction: column;
-        gap: 1rem;
-    }
-    #vid, #canv {
-        width: 100%;
-        height: 40vh;
-    }
-    #btns {
-        gap: 1rem;
-        width: 90vw;
-        justify-content: space-around;
-    }
-    .es_btn {
-        width: 8vh;
-        height: 8vh;
-    }
-}
-@media (min-width: 481px) and (max-width: 1024px) {
-    body {
-        font-size: 1rem;
-        background-repeat: repeat-y;
-    }
-    #cabecalho {
-        width: 100dvw;
-    }
-    #tag_video {
-        flex-direction: row;
-        gap: 1.5rem;
-    }
-    #vid, #canv {
-        width: 48%;
-        height: 50vh;
-    }
-    #btns {
-        width: 80vw;
-        gap: 1rem;
-    }
-    .es_btn {
-        width: 9vh;
-        height: 9vh;
-    }
-}
-@media screen and (min-width: 1024px) {
-    body {
-        font-size: 1.2rem;
-    }
-    #vid, #canv {
-        width: 90%;
-        height: 70vh;
-    }
-    #btns {
-        width: 70vw;
-        gap: 2rem;
-    }
-    .es_btn {
-        width: 10vh;
-        height: 10vh;
-    }
-}
-@media (hover: none) and (pointer: coarse) {
-    .es_btn {
-      touch-action: manipulation;
-    }
+@media (max-width: 480px) {
+  #cabecalho {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem;
   }
-  
+
+  #tag_video {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  #vid,
+  #canv {
+    width: 100%;
+    height: 40vh;
+  }
+
+  #btns {
+    width: 100%;
+    gap: 1rem;
+  }
+
+  .es_btn {
+    width: 3.5rem;
+    height: 3.5rem;
+    font-size: 1.2rem;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 1024px) {
+  #vid,
+  #canv {
+    width: 48%;
+    height: 45vh;
+  }
+
+  .es_btn {
+    width: 4rem;
+    height: 4rem;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .es_btn {
+    touch-action: manipulation;
+  }
+}
