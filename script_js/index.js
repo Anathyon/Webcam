@@ -23,6 +23,7 @@ const btnShare = [
 ].filter(Boolean);
 const filtros = [
     'none',
+    'opacity(50%)contrast(150%)',
     'grayscale(100%)',
     'sepia(100%)',
     'invert(100%)',
@@ -30,9 +31,14 @@ const filtros = [
     'brightness(150%)',
     'blur(5px)',
     'hue-rotate(90deg)',
+    'hue-rotate(180deg)',
     'saturate(200%)',
     'opacity(50%)',
-    'drop-shadow(5px 5px 5px black)'
+    'drop-shadow(5px 5px 5px black)',
+    'grayscale(50%) sepia(60%)',
+    'contrast(200%) brightness(80%)',
+    'invert(100%) hue-rotate(270deg)',
+    'blur(3px) brightness(120%)'
 ];
 let filtroAtual = 0;
 let streamAtual = null;
