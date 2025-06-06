@@ -1,11 +1,26 @@
 "use strict";
 const video = document.querySelector('#vid');
 const canvas = document.querySelector('#canv');
-const btnFoto = document.querySelector('#it_foto');
-const btnInverter = document.querySelector('#it_inverter');
-const btnTema = document.querySelector('#it_tema');
-const btnFiltro = document.querySelector('#it_filtro');
-const btnShare = document.querySelector('#it_share');
+const btnFoto = [
+    document.querySelector('#it_foto'),
+    document.querySelector('#it_foto_mb')
+].filter(Boolean);
+const btnInverter = [
+    document.querySelector('#it_inverter'),
+    document.querySelector('#it_inverter_mb')
+].filter(Boolean);
+const btnTema = [
+    document.querySelector('#it_tema'),
+    document.querySelector('#it_tema_mb')
+].filter(Boolean);
+const btnFiltro = [
+    document.querySelector('#it_filtro'),
+    document.querySelector('#it_filtro_mb')
+].filter(Boolean);
+const btnShare = [
+    document.querySelector('#it_share'),
+    document.querySelector('#it_share_mb')
+].filter(Boolean);
 const filtros = ['none', 'grayscale(100%)', 'sepia(100%)', 'invert(100%)', 'contrast(150%)'];
 let filtroAtual = 0;
 let streamAtual = null;
@@ -31,7 +46,7 @@ async function iniciarCamera(frontal = true) {
         console.error(error);
     }
 }
-btnFoto.addEventListener('click', () => {
+btnFoto.forEach(btn => btn.addEventListener('click', () => {
     const ctx = canvas.getContext('2d');
     if (!ctx)
         return;
@@ -39,19 +54,19 @@ btnFoto.addEventListener('click', () => {
     canvas.height = video.videoHeight;
     ctx.filter = video.style.filter || 'none';
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-});
-btnTema.addEventListener('click', () => {
+}));
+btnTema.forEach(btn => btn.addEventListener('click', () => {
     document.body.classList.toggle('alt_modo');
-});
-btnInverter.addEventListener('click', () => {
+}));
+btnInverter.forEach(btn => btn.addEventListener('click', () => {
     usandoCameraFrontal = !usandoCameraFrontal;
     iniciarCamera(usandoCameraFrontal);
-});
-btnFiltro.addEventListener('click', () => {
+}));
+btnFiltro.forEach(btn => btn.addEventListener('click', () => {
     filtroAtual = (filtroAtual + 1) % filtros.length;
     video.style.filter = filtros[filtroAtual];
-});
-btnShare.addEventListener('click', async () => {
+}));
+btnShare.forEach(btn => btn.addEventListener('click', async () => {
     canvas.toBlob(async (blob) => {
         if (!blob)
             return;
@@ -72,5 +87,5 @@ btnShare.addEventListener('click', async () => {
             alert('Compartilhamento não suportado neste navegador.');
         }
     }, 'image/png');
-});
+}));
 iniciarCamera(usandoCameraFrontal);

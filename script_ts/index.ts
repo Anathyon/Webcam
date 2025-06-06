@@ -1,19 +1,38 @@
 const video = document.querySelector('#vid') as HTMLVideoElement
 const canvas = document.querySelector('#canv') as HTMLCanvasElement
-const btnFoto = document.querySelector('#it_foto') as HTMLButtonElement
-const btnInverter = document.querySelector('#it_inverter') as HTMLButtonElement
-const btnTema = document.querySelector('#it_tema') as HTMLButtonElement
-const btnFiltro = document.querySelector('#it_filtro') as HTMLButtonElement
-const btnShare = document.querySelector('#it_share') as HTMLButtonElement
+
+const btnFoto = [
+  document.querySelector('#it_foto'),
+  document.querySelector('#it_foto_mb')
+].filter(Boolean) as HTMLButtonElement[]
+
+const btnInverter = [
+  document.querySelector('#it_inverter'),
+  document.querySelector('#it_inverter_mb')
+].filter(Boolean) as HTMLButtonElement[]
+
+const btnTema = [
+  document.querySelector('#it_tema'),
+  document.querySelector('#it_tema_mb')
+].filter(Boolean) as HTMLButtonElement[]
+
+const btnFiltro = [
+  document.querySelector('#it_filtro'),
+  document.querySelector('#it_filtro_mb')
+].filter(Boolean) as HTMLButtonElement[]
+
+const btnShare = [
+  document.querySelector('#it_share'),
+  document.querySelector('#it_share_mb')
+].filter(Boolean) as HTMLButtonElement[]
 
 const filtros = ['none', 'grayscale(100%)', 'sepia(100%)', 'invert(100%)', 'contrast(150%)']
-let filtroAtual:number = 0
+let filtroAtual: number = 0
 let streamAtual: MediaStream | null = null
-let usandoCameraFrontal:boolean = true
+let usandoCameraFrontal: boolean = true
 
-async function iniciarCamera (frontal = true):Promise<void> {
-  
-    if (streamAtual) {
+async function iniciarCamera(frontal = true): Promise<void> {
+  if (streamAtual) {
     streamAtual.getTracks().forEach(track => track.stop())
   }
 
@@ -35,30 +54,30 @@ async function iniciarCamera (frontal = true):Promise<void> {
   }
 }
 
-btnFoto.addEventListener('click', ():void => {
+btnFoto.forEach(btn => btn.addEventListener('click', (): void => {
   const ctx = canvas.getContext('2d')
   if (!ctx) return
   canvas.width = video.videoWidth
   canvas.height = video.videoHeight
   ctx.filter = video.style.filter || 'none'
   ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
-})
+}))
 
-btnTema.addEventListener('click', ():void => {
+btnTema.forEach(btn => btn.addEventListener('click', (): void => {
   document.body.classList.toggle('alt_modo')
-})
+}))
 
-btnInverter.addEventListener('click', ():void => {
+btnInverter.forEach(btn => btn.addEventListener('click', (): void => {
   usandoCameraFrontal = !usandoCameraFrontal
   iniciarCamera(usandoCameraFrontal)
-})
+}))
 
-btnFiltro.addEventListener('click', ():void => {
-  filtroAtual = (filtroAtual + 1) % filtros.length;
-  video.style.filter = filtros[filtroAtual];
-})
+btnFiltro.forEach(btn => btn.addEventListener('click', (): void => {
+  filtroAtual = (filtroAtual + 1) % filtros.length
+  video.style.filter = filtros[filtroAtual]
+}))
 
-btnShare.addEventListener('click', async () => {
+btnShare.forEach(btn => btn.addEventListener('click', async () => {
   canvas.toBlob(async (blob) => {
     if (!blob) return
 
@@ -78,6 +97,6 @@ btnShare.addEventListener('click', async () => {
       alert('Compartilhamento não suportado neste navegador.')
     }
   }, 'image/png')
-})
+}))
 
 iniciarCamera(usandoCameraFrontal)
