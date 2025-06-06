@@ -124,6 +124,7 @@ body {
     align-items: flex-start;
     gap: 1rem;
     padding: 1rem;
+    width: 100dvw;
   }
   
   #tag_video {
@@ -151,8 +152,8 @@ body {
   }
 
   .es_btn {
-    width: 3.5rem;
-    height: 3.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
     font-size: 1.2rem;
     margin-left: 2%;
   }
