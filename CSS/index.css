@@ -14,6 +14,18 @@
   --btn-bg: #ffffffbe;
   --alt-btn-bg: #000000;
   --font-family: "Barlow", sans-serif;
+  --ic-color: #000000 
+}
+
+.alt_modo {
+  --header-bg: var(--alt-header-bg);
+  --bg-url: var(--alt-bg-url);
+  --btn-bg: var(--alt-btn-bg);
+  --ic-color: #ffffff
+}
+
+.bi{
+   color: var(--ic-color);
 }
 
 body {
@@ -24,12 +36,6 @@ body {
   font-weight: 100;
   color: #fff;
   height: 100vh;
-}
-
-.alt_modo {
-  --header-bg: var(--alt-header-bg);
-  --bg-url: var(--alt-bg-url);
-  --btn-bg: var(--alt-btn-bg);
 }
 
 #cabecalho {
