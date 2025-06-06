@@ -1,20 +1,20 @@
-const video = document.getElementById('vid') as HTMLVideoElement;
-const canvas = document.getElementById('canv') as HTMLCanvasElement;
-const btnFoto = document.getElementById('it_foto')!;
-const btnInverter = document.getElementById('it_inverter')!;
-const btnTema = document.getElementById('it_tema')!;
-const btnFiltro = document.getElementById('it_filtro')!;
-const btnShare = document.getElementById('it_share')!;
+const video = document.querySelector('#vid') as HTMLVideoElement
+const canvas = document.querySelector('#canv') as HTMLCanvasElement
+const btnFoto = document.querySelector('#it_foto') as HTMLButtonElement
+const btnInverter = document.querySelector('#it_inverter') as HTMLButtonElement
+const btnTema = document.querySelector('#it_tema') as HTMLButtonElement
+const btnFiltro = document.querySelector('#it_filtro') as HTMLButtonElement
+const btnShare = document.querySelector('#it_share') as HTMLButtonElement
 
-const filtros = ['none', 'grayscale(100%)', 'sepia(100%)', 'invert(100%)', 'contrast(150%)'];
-let filtroAtual = 0;
-let streamAtual: MediaStream | null = null;
-let usandoCameraFrontal = true;
+const filtros = ['none', 'grayscale(100%)', 'sepia(100%)', 'invert(100%)', 'contrast(150%)']
+let filtroAtual:number = 0
+let streamAtual: MediaStream | null = null
+let usandoCameraFrontal:boolean = true
 
-// Função para iniciar a câmera
-async function iniciarCamera(frontal = true) {
-  if (streamAtual) {
-    streamAtual.getTracks().forEach(track => track.stop());
+async function iniciarCamera (frontal = true):Promise<void> {
+  
+    if (streamAtual) {
+    streamAtual.getTracks().forEach(track => track.stop())
   }
 
   const constraints = {
@@ -24,50 +24,45 @@ async function iniciarCamera(frontal = true) {
       height: { ideal: 720 }
     },
     audio: false
-  };
+  }
 
   try {
-    streamAtual = await navigator.mediaDevices.getUserMedia(constraints);
-    video.srcObject = streamAtual;
+    streamAtual = await navigator.mediaDevices.getUserMedia(constraints)
+    video.srcObject = streamAtual
   } catch (error) {
-    alert('Erro ao acessar a câmera');
-    console.error(error);
+    alert('Erro ao acessar a câmera')
+    console.error(error)
   }
 }
 
-// Capturar imagem
-btnFoto.addEventListener('click', () => {
-  const ctx = canvas.getContext('2d');
-  if (!ctx) return;
-  canvas.width = video.videoWidth;
-  canvas.height = video.videoHeight;
-  ctx.filter = video.style.filter || 'none';
-  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-});
+btnFoto.addEventListener('click', ():void => {
+  const ctx = canvas.getContext('2d')
+  if (!ctx) return
+  canvas.width = video.videoWidth
+  canvas.height = video.videoHeight
+  ctx.filter = video.style.filter || 'none'
+  ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
+})
 
-// Alternar tema
-btnTema.addEventListener('click', () => {
-  document.body.classList.toggle('alt_modo');
-});
+btnTema.addEventListener('click', ():void => {
+  document.body.classList.toggle('alt_modo')
+})
 
-// Inverter câmera
-btnInverter.addEventListener('click', () => {
-  usandoCameraFrontal = !usandoCameraFrontal;
-  iniciarCamera(usandoCameraFrontal);
-});
+btnInverter.addEventListener('click', ():void => {
+  usandoCameraFrontal = !usandoCameraFrontal
+  iniciarCamera(usandoCameraFrontal)
+})
 
-// Alternar filtro
-btnFiltro.addEventListener('click', () => {
+btnFiltro.addEventListener('click', ():void => {
   filtroAtual = (filtroAtual + 1) % filtros.length;
   video.style.filter = filtros[filtroAtual];
-});
+})
 
-// Compartilhar imagem
 btnShare.addEventListener('click', async () => {
   canvas.toBlob(async (blob) => {
-    if (!blob) return;
+    if (!blob) return
 
-    const arquivo = new File([blob], 'foto.png', { type: 'image/png' });
+    const arquivo = new File([blob], 'foto.png', { type: 'image/png' })
 
     if (navigator.canShare && navigator.canShare({ files: [arquivo] })) {
       try {
@@ -75,15 +70,14 @@ btnShare.addEventListener('click', async () => {
           files: [arquivo],
           title: 'Foto capturada',
           text: 'Veja essa imagem que capturei!',
-        });
+        })
       } catch (err) {
-        console.error('Erro ao compartilhar:', err);
+        console.error('Erro ao compartilhar:', err)
       }
     } else {
-      alert('Compartilhamento não suportado neste navegador.');
+      alert('Compartilhamento não suportado neste navegador.')
     }
-  }, 'image/png');
-});
+  }, 'image/png')
+})
 
-// Iniciar app
-iniciarCamera(usandoCameraFrontal);
+iniciarCamera(usandoCameraFrontal)

@@ -1,16 +1,15 @@
 "use strict";
-const video = document.getElementById('vid');
-const canvas = document.getElementById('canv');
-const btnFoto = document.getElementById('it_foto');
-const btnInverter = document.getElementById('it_inverter');
-const btnTema = document.getElementById('it_tema');
-const btnFiltro = document.getElementById('it_filtro');
-const btnShare = document.getElementById('it_share');
+const video = document.querySelector('#vid');
+const canvas = document.querySelector('#canv');
+const btnFoto = document.querySelector('#it_foto');
+const btnInverter = document.querySelector('#it_inverter');
+const btnTema = document.querySelector('#it_tema');
+const btnFiltro = document.querySelector('#it_filtro');
+const btnShare = document.querySelector('#it_share');
 const filtros = ['none', 'grayscale(100%)', 'sepia(100%)', 'invert(100%)', 'contrast(150%)'];
 let filtroAtual = 0;
 let streamAtual = null;
 let usandoCameraFrontal = true;
-// Função para iniciar a câmera
 async function iniciarCamera(frontal = true) {
     if (streamAtual) {
         streamAtual.getTracks().forEach(track => track.stop());
@@ -32,7 +31,6 @@ async function iniciarCamera(frontal = true) {
         console.error(error);
     }
 }
-// Capturar imagem
 btnFoto.addEventListener('click', () => {
     const ctx = canvas.getContext('2d');
     if (!ctx)
@@ -42,21 +40,17 @@ btnFoto.addEventListener('click', () => {
     ctx.filter = video.style.filter || 'none';
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 });
-// Alternar tema
 btnTema.addEventListener('click', () => {
     document.body.classList.toggle('alt_modo');
 });
-// Inverter câmera
 btnInverter.addEventListener('click', () => {
     usandoCameraFrontal = !usandoCameraFrontal;
     iniciarCamera(usandoCameraFrontal);
 });
-// Alternar filtro
 btnFiltro.addEventListener('click', () => {
     filtroAtual = (filtroAtual + 1) % filtros.length;
     video.style.filter = filtros[filtroAtual];
 });
-// Compartilhar imagem
 btnShare.addEventListener('click', async () => {
     canvas.toBlob(async (blob) => {
         if (!blob)
@@ -79,5 +73,4 @@ btnShare.addEventListener('click', async () => {
         }
     }, 'image/png');
 });
-// Iniciar app
 iniciarCamera(usandoCameraFrontal);
