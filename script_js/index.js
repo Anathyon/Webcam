@@ -21,7 +21,19 @@ const btnShare = [
     document.querySelector('#it_share'),
     document.querySelector('#it_share_mb')
 ].filter(Boolean);
-const filtros = ['none', 'grayscale(100%)', 'sepia(100%)', 'invert(100%)', 'contrast(150%)'];
+const filtros = [
+    'none',
+    'grayscale(100%)',
+    'sepia(100%)',
+    'invert(100%)',
+    'contrast(150%)',
+    'brightness(150%)',
+    'blur(5px)',
+    'hue-rotate(90deg)',
+    'saturate(200%)',
+    'opacity(50%)',
+    'drop-shadow(5px 5px 5px black)'
+];
 let filtroAtual = 0;
 let streamAtual = null;
 let usandoCameraFrontal = true;

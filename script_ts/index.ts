@@ -26,7 +26,20 @@ const btnShare = [
   document.querySelector('#it_share_mb')
 ].filter(Boolean) as HTMLButtonElement[]
 
-const filtros = ['none', 'grayscale(100%)', 'sepia(100%)', 'invert(100%)', 'contrast(150%)']
+const filtros:string[] = [
+  'none',
+  'grayscale(100%)',
+  'sepia(100%)',
+  'invert(100%)',
+  'contrast(150%)',
+  'brightness(150%)',
+  'blur(5px)',
+  'hue-rotate(90deg)',
+  'saturate(200%)',
+  'opacity(50%)',
+  'drop-shadow(5px 5px 5px black)'
+]
+
 let filtroAtual: number = 0
 let streamAtual: MediaStream | null = null
 let usandoCameraFrontal: boolean = true
