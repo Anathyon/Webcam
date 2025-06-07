@@ -14,18 +14,34 @@
   --btn-bg: #ffffffbe;
   --alt-btn-bg: #000000;
   --font-family: "Barlow", sans-serif;
-  --ic-color: #000000 
+  --ic-color: #000000; 
+  --color-fil_atu: #000;
+  --color-fil_atud: #ffffff;
 }
 
 .alt_modo {
   --header-bg: var(--alt-header-bg);
   --bg-url: var(--alt-bg-url);
   --btn-bg: var(--alt-btn-bg);
-  --ic-color: #ffffff
+  --ic-color: #ffffff;
+  --color-fil_atu: #fff;
+  --color-fil_atud: #000000;
+}
+
+.lis_it{
+    color: var(--color-fil_atud);
 }
 
 .bi{
    color: var(--ic-color);
+}
+
+#filtro_atual_mo{
+   display: none;
+}
+
+#filtro_atual_g{
+   color: var(--color-fil_atud);
 }
 
 body {
@@ -34,7 +50,7 @@ body {
   background-attachment: fixed;
   font-family: var(--font-family);
   font-weight: 100;
-  color: #fff;
+  background-color: #000000;
   height: 100vh;
 }
 
@@ -136,6 +152,16 @@ body {
   #tag_video {
     flex-direction: column;
     gap: 1rem;
+  }
+
+  #filtro_atual_g{
+    display: none;
+  }
+
+  #filtro_atual_mo{
+    display: flex;
+    justify-content: center;
+    color: var(--color-fil_atu);
   }
 
   #vid,

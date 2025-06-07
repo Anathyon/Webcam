@@ -1,5 +1,14 @@
 const video = document.querySelector('#vid') as HTMLVideoElement
 const canvas = document.querySelector('#canv') as HTMLCanvasElement
+const img_hedd = document.querySelector('#img_hedd') as HTMLImageElement
+
+const logo_alt = ():void => {
+     if (document.body.classList.contains('alt_modo')) {
+          img_hedd.src = '/CSS/imagens/1-removebg-preview.png'
+     }else{
+          img_hedd.src = '/CSS/imagens/2-removebg-preview.png'
+     }
+}
 
 const btnFoto = [
   document.querySelector('#it_foto'),
@@ -84,6 +93,7 @@ btnFoto.forEach(btn => btn.addEventListener('click', (): void => {
 
 btnTema.forEach(btn => btn.addEventListener('click', (): void => {
   document.body.classList.toggle('alt_modo')
+  logo_alt()
 }))
 
 btnInverter.forEach(btn => btn.addEventListener('click', (): void => {

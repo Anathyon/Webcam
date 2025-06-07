@@ -1,6 +1,15 @@
 "use strict";
 const video = document.querySelector('#vid');
 const canvas = document.querySelector('#canv');
+const img_hedd = document.querySelector('#img_hedd');
+const logo_alt = () => {
+    if (document.body.classList.contains('alt_modo')) {
+        img_hedd.src = '/CSS/imagens/1-removebg-preview.png';
+    }
+    else {
+        img_hedd.src = '/CSS/imagens/2-removebg-preview.png';
+    }
+};
 const btnFoto = [
     document.querySelector('#it_foto'),
     document.querySelector('#it_foto_mb')
@@ -75,6 +84,7 @@ btnFoto.forEach(btn => btn.addEventListener('click', () => {
 }));
 btnTema.forEach(btn => btn.addEventListener('click', () => {
     document.body.classList.toggle('alt_modo');
+    logo_alt();
 }));
 btnInverter.forEach(btn => btn.addEventListener('click', () => {
     usandoCameraFrontal = !usandoCameraFrontal;
