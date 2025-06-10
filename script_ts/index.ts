@@ -4,7 +4,9 @@ const img_hedd = document.querySelector('#img_hedd') as HTMLImageElement
 const filtro_atual_g = document.querySelector('#filtro_atual_g') as HTMLParagraphElement
 const filtro_atual_mo = document.querySelector ('#filtro_atual_mo') as HTMLParagraphElement 
 
-const logo_alt = ():void => {
+video.disablePictureInPicture = true
+
+const alt = ():void => {
     const alter_modo = document.querySelector ('#alter_modo') as HTMLElement
 
     if (document.body.classList.contains('alt_modo')) {
@@ -90,7 +92,7 @@ async function iniciarCamera(frontal = true): Promise<void> {
     stream_atual = await navigator.mediaDevices.getUserMedia(constraints)
     video.srcObject = stream_atual
   } catch (error) {
-    alert('Erro ao acessar a câmera')
+    alert('Erro ao acessar a câmera! Verifique se sua câmera está sendo utilizada em outras aplicações.')
     console.error(error)
   }
 }
@@ -106,7 +108,7 @@ btn_foto.forEach(btn => btn.addEventListener('click', (): void => {
 
 btn_tema.forEach(btn => btn.addEventListener('click', (): void => {
   document.body.classList.toggle('alt_modo')
-  logo_alt()
+  alt()
 }))
 
 btn_inverter.forEach(btn => btn.addEventListener('click', (): void => {

@@ -4,7 +4,8 @@ const canvas = document.querySelector('#canv');
 const img_hedd = document.querySelector('#img_hedd');
 const filtro_atual_g = document.querySelector('#filtro_atual_g');
 const filtro_atual_mo = document.querySelector('#filtro_atual_mo');
-const logo_alt = () => {
+video.disablePictureInPicture = true;
+const alt = () => {
     const alter_modo = document.querySelector('#alter_modo');
     if (document.body.classList.contains('alt_modo')) {
         img_hedd.src = '/CSS/imagens/1-removebg-preview.png';
@@ -75,7 +76,7 @@ async function iniciarCamera(frontal = true) {
         video.srcObject = stream_atual;
     }
     catch (error) {
-        alert('Erro ao acessar a câmera');
+        alert('Erro ao acessar a câmera! Verifique se sua câmera está sendo utilizada em outras aplicações.');
         console.error(error);
     }
 }
@@ -90,7 +91,7 @@ btn_foto.forEach(btn => btn.addEventListener('click', () => {
 }));
 btn_tema.forEach(btn => btn.addEventListener('click', () => {
     document.body.classList.toggle('alt_modo');
-    logo_alt();
+    alt();
 }));
 btn_inverter.forEach(btn => btn.addEventListener('click', () => {
     usando_cam_front = !usando_cam_front;
