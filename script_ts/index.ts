@@ -5,11 +5,17 @@ const filtro_atual_g = document.querySelector('#filtro_atual_g') as HTMLParagrap
 const filtro_atual_mo = document.querySelector ('#filtro_atual_mo') as HTMLParagraphElement 
 
 const logo_alt = ():void => {
-     if (document.body.classList.contains('alt_modo')) {
+    const alter_modo = document.querySelector ('#alter_modo') as HTMLElement
+
+    if (document.body.classList.contains('alt_modo')) {
           img_hedd.src = '/CSS/imagens/1-removebg-preview.png'
      }else{
           img_hedd.src = '/CSS/imagens/2-removebg-preview.png'
      }
+
+    if (alter_modo.classList.contains("bi-moon-stars")) {
+         alter_modo.classList.toggle("bi-sun-fill")
+    }
 }
 
 const btn_foto = [
