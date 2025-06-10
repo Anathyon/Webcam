@@ -2,6 +2,8 @@
 const video = document.querySelector('#vid');
 const canvas = document.querySelector('#canv');
 const img_hedd = document.querySelector('#img_hedd');
+const filtro_atual_g = document.querySelector('#filtro_atual_g');
+const filtro_atual_mo = document.querySelector('#filtro_atual_mo');
 const logo_alt = () => {
     if (document.body.classList.contains('alt_modo')) {
         img_hedd.src = '/CSS/imagens/1-removebg-preview.png';
@@ -10,51 +12,51 @@ const logo_alt = () => {
         img_hedd.src = '/CSS/imagens/2-removebg-preview.png';
     }
 };
-const btnFoto = [
+const btn_foto = [
     document.querySelector('#it_foto'),
     document.querySelector('#it_foto_mb')
 ].filter(Boolean);
-const btnInverter = [
+const btn_inverter = [
     document.querySelector('#it_inverter'),
     document.querySelector('#it_inverter_mb')
 ].filter(Boolean);
-const btnTema = [
+const btn_tema = [
     document.querySelector('#it_tema'),
     document.querySelector('#it_tema_mb')
 ].filter(Boolean);
-const btnFiltro = [
+const btn_filtro = [
     document.querySelector('#it_filtro'),
     document.querySelector('#it_filtro_mb')
 ].filter(Boolean);
-const btnShare = [
+const btn_share = [
     document.querySelector('#it_share'),
     document.querySelector('#it_share_mb')
 ].filter(Boolean);
 const filtros = [
-    'none',
-    'opacity(50%)contrast(150%)',
-    'grayscale(100%)',
-    'sepia(100%)',
-    'invert(100%)',
-    'contrast(150%)',
-    'brightness(150%)',
-    'blur(5px)',
-    'hue-rotate(90deg)',
-    'hue-rotate(180deg)',
-    'saturate(200%)',
-    'opacity(50%)',
-    'drop-shadow(5px 5px 5px black)',
-    'grayscale(50%) sepia(60%)',
-    'contrast(200%) brightness(80%)',
-    'invert(100%) hue-rotate(270deg)',
-    'blur(3px) brightness(120%)'
+    { nome: 'Nenhum', valor: 'none' },
+    { nome: 'Opacidade 50% + Contraste 150%', valor: 'opacity(50%) contrast(150%)' },
+    { nome: 'Tons de Cinza', valor: 'grayscale(100%)' },
+    { nome: 'Sépia', valor: 'sepia(100%)' },
+    { nome: 'Inverter Cores', valor: 'invert(100%)' },
+    { nome: 'Contraste 150%', valor: 'contrast(150%)' },
+    { nome: 'Brilho 150%', valor: 'brightness(150%)' },
+    { nome: 'Desfoque 5px', valor: 'blur(5px)' },
+    { nome: 'Girar Matiz 90°', valor: 'hue-rotate(90deg)' },
+    { nome: 'Girar Matiz 180°', valor: 'hue-rotate(180deg)' },
+    { nome: 'Saturação 200%', valor: 'saturate(200%)' },
+    { nome: 'Opacidade 50%', valor: 'opacity(50%)' },
+    { nome: 'Sombra Projetada', valor: 'drop-shadow(5px 5px 5px black)' },
+    { nome: 'Meio Cinza + Sépia', valor: 'grayscale(50%) sepia(60%)' },
+    { nome: 'Contraste Alto + Brilho Reduzido', valor: 'contrast(200%) brightness(80%)' },
+    { nome: 'Inversão + Matiz 270°', valor: 'invert(100%) hue-rotate(270deg)' },
+    { nome: 'Desfoque 3px + Brilho 120%', valor: 'blur(3px) brightness(120%)' }
 ];
-let filtroAtual = 0;
-let streamAtual = null;
-let usandoCameraFrontal = true;
+let filtro_atual = 0;
+let stream_atual = null;
+let usando_cam_front = true;
 async function iniciarCamera(frontal = true) {
-    if (streamAtual) {
-        streamAtual.getTracks().forEach(track => track.stop());
+    if (stream_atual) {
+        stream_atual.getTracks().forEach(track => track.stop());
     }
     const constraints = {
         video: {
@@ -65,15 +67,15 @@ async function iniciarCamera(frontal = true) {
         audio: false
     };
     try {
-        streamAtual = await navigator.mediaDevices.getUserMedia(constraints);
-        video.srcObject = streamAtual;
+        stream_atual = await navigator.mediaDevices.getUserMedia(constraints);
+        video.srcObject = stream_atual;
     }
     catch (error) {
         alert('Erro ao acessar a câmera');
         console.error(error);
     }
 }
-btnFoto.forEach(btn => btn.addEventListener('click', () => {
+btn_foto.forEach(btn => btn.addEventListener('click', () => {
     const ctx = canvas.getContext('2d');
     if (!ctx)
         return;
@@ -82,19 +84,26 @@ btnFoto.forEach(btn => btn.addEventListener('click', () => {
     ctx.filter = video.style.filter || 'none';
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 }));
-btnTema.forEach(btn => btn.addEventListener('click', () => {
+btn_tema.forEach(btn => btn.addEventListener('click', () => {
     document.body.classList.toggle('alt_modo');
     logo_alt();
 }));
-btnInverter.forEach(btn => btn.addEventListener('click', () => {
-    usandoCameraFrontal = !usandoCameraFrontal;
-    iniciarCamera(usandoCameraFrontal);
+btn_inverter.forEach(btn => btn.addEventListener('click', () => {
+    usando_cam_front = !usando_cam_front;
+    iniciarCamera(usando_cam_front);
 }));
-btnFiltro.forEach(btn => btn.addEventListener('click', () => {
-    filtroAtual = (filtroAtual + 1) % filtros.length;
-    video.style.filter = filtros[filtroAtual];
+btn_filtro.forEach(btn => btn.addEventListener('click', () => {
+    filtro_atual = (filtro_atual + 1) % filtros.length;
+    const filtro = filtros[filtro_atual];
+    video.style.filter = filtro.valor;
+    if (filtro_atual_g) {
+        filtro_atual_g.textContent = `Filtro atual: ${filtro.nome}`;
+    }
+    if (filtro_atual_mo) {
+        filtro_atual_mo.textContent = `Filtro atual: ${filtro.nome}`;
+    }
 }));
-btnShare.forEach(btn => btn.addEventListener('click', async () => {
+btn_share.forEach(btn => btn.addEventListener('click', async () => {
     canvas.toBlob(async (blob) => {
         if (!blob)
             return;
@@ -104,7 +113,7 @@ btnShare.forEach(btn => btn.addEventListener('click', async () => {
                 await navigator.share({
                     files: [arquivo],
                     title: 'Foto capturada',
-                    text: 'Veja essa imagem que capturei!',
+                    text: 'Veja essa foto que tirei!',
                 });
             }
             catch (err) {
@@ -116,4 +125,4 @@ btnShare.forEach(btn => btn.addEventListener('click', async () => {
         }
     }, 'image/png');
 }));
-iniciarCamera(usandoCameraFrontal);
+iniciarCamera(usando_cam_front);
