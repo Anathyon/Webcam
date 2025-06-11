@@ -14,9 +14,11 @@ bt_ab_galeria.addEventListener('click', () => {
     galeria_modal.style.display = 'block';
     rend_galeria();
 });
-bt_ab_galeria_mb.addEventListener('click', () => {
-    galeria_modal.style.display = 'block';
-    rend_galeria();
+document.addEventListener('DOMContentLoaded', () => {
+    bt_ab_galeria_mb.addEventListener('click', () => {
+        galeria_modal.style.display = 'block';
+        rend_galeria();
+    });
 });
 bt_fechar.addEventListener('click', () => {
     galeria_modal.style.display = 'none';

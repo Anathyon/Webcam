@@ -20,9 +20,11 @@ bt_ab_galeria.addEventListener('click', ():void => {
   rend_galeria()
 })
 
-bt_ab_galeria_mb.addEventListener('click', ():void => {
-   galeria_modal.style.display = 'block'
-   rend_galeria()
+document.addEventListener('DOMContentLoaded', ():void => {
+      bt_ab_galeria_mb.addEventListener('click', ():void => {
+            galeria_modal.style.display = 'block'
+            rend_galeria()
+      })
 })
 
 bt_fechar.addEventListener('click', ():void => {
