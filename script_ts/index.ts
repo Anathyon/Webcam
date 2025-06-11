@@ -3,8 +3,84 @@ const canvas = document.querySelector('#canv') as HTMLCanvasElement
 const img_hedd = document.querySelector('#img_hedd') as HTMLImageElement
 const filtro_atual_g = document.querySelector('#filtro_atual_g') as HTMLParagraphElement
 const filtro_atual_mo = document.querySelector ('#filtro_atual_mo') as HTMLParagraphElement 
-
 video.disablePictureInPicture = true
+
+type Foto = {
+  id: string;
+  dataUrl: string;
+};
+
+const galeriaModal = document.getElementById('galeriaModal')!;
+const abrirGaleria = document.getElementById('abrirGaleria')!;
+const fecharGaleria = document.getElementById('fecharGaleria')!;
+const containerGaleria = document.getElementById('containerGaleria')!;
+
+abrirGaleria.addEventListener('click', () => {
+  galeriaModal.style.display = 'block'
+  renderGaleria();
+})
+
+fecharGaleria.addEventListener('click', () => {
+  galeriaModal.style.display = 'none'
+})
+
+const salvarFoto = (dataUrl: string): void => {
+  const fotos: Foto[] = JSON.parse(localStorage.getItem('fotos') || '[]')
+  fotos.push({ id: Date.now().toString(), dataUrl })
+  localStorage.setItem('fotos', JSON.stringify(fotos))
+}
+
+const renderGaleria = (): void => {
+  const fotos: Foto[] = JSON.parse(localStorage.getItem('fotos') || '[]')
+  containerGaleria.innerHTML = ''
+
+  fotos.forEach(foto => {
+    const div = document.createElement('div')
+    div.innerHTML = `
+      <img src="${foto.dataUrl}" alt="Foto">
+      <div class="botoes">
+        <button onclick="baixarFoto('${foto.dataUrl}')">Baixar</button>
+        <button onclick="compartilharFoto('${foto.dataUrl}')">Compartilhar</button>
+        <button onclick="deletarFoto('${foto.id}')">Deletar</button>
+      </div>
+    `
+    containerGaleria.appendChild(div)
+  })
+}
+
+(window as any).baixarFoto = (dataUrl: string) => {
+  const link = document.createElement('a')
+  link.href = dataUrl;
+  link.download = 'minha-foto.png'
+  link.click()
+}
+
+(window as any).compartilharFoto = async (dataUrl: string) => {
+  if (navigator.canShare && navigator.canShare({ files: [] })) {
+    const blob = await (await fetch(dataUrl)).blob()
+    const file = new File([blob], 'foto.png', { type: blob.type })
+    try {
+      await navigator.share({ files: [file], title: 'Minha Foto' })
+    } catch (err) {
+      alert('Não foi possível compartilhar');
+    }
+  } else {
+    alert('Compartilhamento não suportado')
+  }
+
+  if (galeriaModal.style.display === 'block') {
+  renderGaleria()
+  }
+}
+
+(window as any).deletarFoto = (id: string) => {
+  const fotos: Foto[] = JSON.parse(localStorage.getItem('fotos') || '[]')
+  const atualizadas = fotos.filter(f => f.id !== id)
+  localStorage.setItem('fotos', JSON.stringify(atualizadas))
+  renderGaleria()
+}
+
+
 
 const alt = ():void => {
     const alter_modo = document.querySelector ('#alter_modo') as HTMLElement
@@ -100,10 +176,14 @@ async function iniciarCamera(frontal = true): Promise<void> {
 btn_foto.forEach(btn => btn.addEventListener('click', (): void => {
   const ctx = canvas.getContext('2d')
   if (!ctx) return
+
   canvas.width = video.videoWidth
   canvas.height = video.videoHeight
   ctx.filter = video.style.filter || 'none'
   ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
+
+  const dataUrl = canvas.toDataURL('image/png')
+  salvarFoto(dataUrl)
 }))
 
 btn_tema.forEach(btn => btn.addEventListener('click', (): void => {
@@ -151,3 +231,4 @@ btn_share.forEach(btn => btn.addEventListener('click', async () => {
 }))
 
 iniciarCamera(usando_cam_front)
+

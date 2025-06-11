@@ -140,6 +140,39 @@ body {
     display: none;
 }
 
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.7);
+}
+
+.modal-content {
+  background-color: #222;
+  margin: 5% auto;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 800px;
+  color: white;
+}
+
+.galeria-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.galeria-grid img {
+  width: 150px;
+  border-radius: 8px;
+}
+
 @media (max-width: 480px) {
   #cabecalho {
     flex-direction: column;
