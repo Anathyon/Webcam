@@ -30,6 +30,9 @@
          <button id="it_share_mb" class="es_btn" title="Compartilhar imagem">
            <i class="bi bi-share"></i>
          </button>
+        <button id="bt_ab_galeria_mb" class="es_btn" title="Galeria de imagens" >
+        <i class="bi bi-images"></i>
+      </button>
       </div>
 
     <ul id="ul_nav">
@@ -63,15 +66,16 @@
       <button id="it_share" class="es_btn" title="Compartilhar imagem">
         <i class="bi bi-share"></i>
       </button>
-      <button id="abrirGaleria" class="es_btn" title="Galeria de imagens" >
+      <button id="bt_ab_galeria" class="es_btn" title="Galeria de imagens" >
         <i class="bi bi-images"></i>
       </button>
-         <div id="galeriaModal" class="modal">
-           <div class="modal-content">
-             <span id="fecharGaleria" class="close">&times;</span>
+
+         <div id="galeria_modal" class="modal">
+           <section class="modal-content">
+             <button id="bt_fechar" class="close">&times;</button>
              <h2>Minhas Fotos</h2>
-             <div id="containerGaleria" class="galeria-grid"></div>
-           </div>
+             <div id="galeria_img" class="galeria-grid"></div>
+           </section>
          </div>
     </section>
   </main>
