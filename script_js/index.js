@@ -10,12 +10,8 @@ const bt_fechar = document.querySelector('#bt_fechar');
 const galeria_img = document.querySelector('#galeria_img');
 const bt_ab_galeria_mb = document.querySelector('#bt_ab_galeria_mb');
 video.disablePictureInPicture = true;
-bt_ab_galeria.addEventListener('click', () => {
-    galeria_modal.style.display = 'block';
-    rend_galeria();
-});
-document.addEventListener('DOMContentLoaded', () => {
-    bt_ab_galeria_mb.addEventListener('click', () => {
+[bt_ab_galeria, bt_ab_galeria_mb].forEach(botao => {
+    botao.addEventListener('click', () => {
         galeria_modal.style.display = 'block';
         rend_galeria();
     });

@@ -15,16 +15,11 @@ type Foto = {
   dataUrl: string
 }
 
-bt_ab_galeria.addEventListener('click', ():void => {
-  galeria_modal.style.display = 'block'
-  rend_galeria()
-})
-
-document.addEventListener('DOMContentLoaded', ():void => {
-      bt_ab_galeria_mb.addEventListener('click', ():void => {
-            galeria_modal.style.display = 'block'
-            rend_galeria()
-      })
+[bt_ab_galeria, bt_ab_galeria_mb].forEach(botao => {
+  botao.addEventListener('click', () => {
+    galeria_modal.style.display = 'block'
+    rend_galeria()
+  })
 })
 
 bt_fechar.addEventListener('click', ():void => {
@@ -86,7 +81,6 @@ const rend_galeria = (): void => {
   localStorage.setItem('fotos', JSON.stringify(atualizadas))
   rend_galeria()
 }
-
 
 
 const alt = ():void => {
