@@ -10,7 +10,7 @@
 </head>
 <body>
   <header id="cabecalho">
-    <img src="/CSS/imagens/2-removebg-preview.png" alt="Logo" id="img_hedd">
+    <img src="/CSS/imagens/2-removebg-preview.png" alt="Logo" draggable="false" id="img_hedd">
      
       <p id="filtro_atual_g">Filtro atual: Nenhum</p>
 
@@ -44,6 +44,7 @@
   </header>
 
   <main id="cont_principal">
+
     <section id="tag_video">
       <video id="vid" autoplay muted class="sty_cam_ft"></video>
       <p id="filtro_atual_mo" style="font-size: 1.6rem; font-weight: bold;">Filtro atual: Nenhum</p>
@@ -70,14 +71,17 @@
         <i class="bi bi-images"></i>
       </button>
     </section>
-          <div id="galeria_modal" class="modal">
-           <section class="modal-content">
-             <button id="bt_fechar" class="close">&times;</button>
-             <h2>Minhas Fotos</h2>
+  </main>
+
+  <section id="content_dialog">
+       <dialog id="galeria_modal" class="modal">
+        <h2>Minhas Fotos</h2>   
+        <section class="modal-content">      
              <div id="galeria_img" class="galeria-grid"></div>
            </section>
-         </div>
-  </main>
+            <button id="bt_fechar" class="close">&times;</button>
+      </dialog> 
+  </section>
 
   <script type="module" src="script_js/index.js"></script>
 </body>

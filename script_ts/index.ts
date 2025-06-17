@@ -3,7 +3,7 @@ const canvas = document.querySelector('#canv') as HTMLCanvasElement
 const img_hedd = document.querySelector('#img_hedd') as HTMLImageElement
 const filtro_atual_g = document.querySelector('#filtro_atual_g') as HTMLParagraphElement
 const filtro_atual_mo = document.querySelector ('#filtro_atual_mo') as HTMLParagraphElement 
-const galeria_modal = document.querySelector('#galeria_modal') as HTMLDivElement
+const galeria_modal = document.querySelector('#galeria_modal') as HTMLDialogElement
 const bt_ab_galeria = document.querySelector('#bt_ab_galeria') as HTMLButtonElement
 const bt_fechar = document.querySelector('#bt_fechar') as  HTMLButtonElement
 const galeria_img = document.querySelector('#galeria_img') as HTMLDivElement
@@ -17,13 +17,13 @@ type Foto = {
 
 [bt_ab_galeria, bt_ab_galeria_mb].forEach(botao => {
   botao.addEventListener('click', () => {
-    galeria_modal.style.display = 'block'
+    galeria_modal.showModal()
     rend_galeria()
   })
 })
 
 bt_fechar.addEventListener('click', ():void => {
-  galeria_modal.style.display = 'none'
+  galeria_modal.close()
 })
 
 const salvar_foto = (dataUrl: string): void => {
@@ -38,12 +38,19 @@ const rend_galeria = (): void => {
 
   fotos.forEach(foto => {
     const div = document.createElement('div')
+    div.setAttribute("class","img_galeria_content")
     div.innerHTML = `
-      <img src="${foto.dataUrl}" alt="Foto">
+      <img src="${foto.dataUrl}" draggable="false" alt="Foto">
       <div class="botoes">
-        <button onclick="baixarFoto('${foto.dataUrl}')">Baixar</button>
-        <button onclick="compartilharFoto('${foto.dataUrl}')">Compartilhar</button>
-        <button onclick="deletarFoto('${foto.id}')">Deletar</button>
+        <button onclick="baixarFoto('${foto.dataUrl}')" title="Baixar">
+            <i class="bi bi-download"></i>
+        </button>
+        <button onclick="compartilharFoto('${foto.dataUrl}')" title="Compartilhar">
+            <i class="bi bi-share"></i>  
+        </button>
+        <button onclick="deletarFoto('${foto.id}')" title="Deletar">
+             <i class="bi bi-trash"></i>              
+        </button>
       </div>
     `
     galeria_img.appendChild(div)
@@ -185,6 +192,7 @@ btn_foto.forEach(btn => btn.addEventListener('click', (): void => {
 
   const dataUrl = canvas.toDataURL('image/png')
   salvar_foto(dataUrl)
+  rend_galeria()
 }))
 
 btn_tema.forEach(btn => btn.addEventListener('click', (): void => {

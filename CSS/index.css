@@ -17,6 +17,7 @@
   --ic-color: #000000; 
   --color-fil_atu: #000;
   --color-fil_atud: #ffffff;
+  --hover-bot_color: #474747;
 }
 
 .alt_modo {
@@ -26,6 +27,7 @@
   --ic-color: #ffffff;
   --color-fil_atu: #fff;
   --color-fil_atud: #000000;
+  --hover-bot_color: #747474;
 }
 
 .lis_it{
@@ -114,6 +116,11 @@ body {
   flex-wrap: wrap;
 }
 
+.img_galeria_content{
+   height: 10dvh;
+   width: 10dvw;
+}
+
 .es_btn {
   width: 4.5rem;
   height: 4.5rem;
@@ -140,38 +147,112 @@ body {
     display: none;
 }
 
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.7);
+.modal::backdrop {
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
 }
 
-.modal-content {
-  background-color: #222;
-  margin: 5% auto;
-  padding: 20px;
-  border-radius: 10px;
-  width: 90%;
-  max-width: 800px;
-  color: white;
+.modal {
+  border: none;
+  border-radius: 1rem;
+  padding: 2rem;
+  width: 100dvw;
+  height: 100dvh;
+  overflow-y: auto;
+  background: linear-gradient(120deg, #000000bb, #9494948f);
+  color: #fff;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+  animation: fadeIn 0.3s ease-in-out;
+  position: relative;
+  left: 1.5%;
+  top: 1.5%;
+}
+
+.modal h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+.close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  font-size: 2rem;
+  color: #fff;
+  cursor: pointer;
 }
 
 .galeria-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
 }
 
-.galeria-grid img {
-  width: 150px;
-  border-radius: 8px;
+.img_galeria_content {
+ background: #111;
+  border-radius: 0.6rem;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.3s;
+  width: 15dvw;
+  height: auto;
+  padding: 10%;
 }
+
+.img_galeria_content:hover {
+  transform: scale(1.02);
+}
+
+.img_galeria_content img {
+  height: 20%;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+  border-bottom: 1px solid #222;
+}
+
+.botoes {
+display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: #1b1b1b;
+  padding: 0.4rem;
+  gap: 0.3rem;
+  margin-top: 3%;
+  border-radius: 1.2rem;
+}
+
+.botoes button {
+  background: var(--btn-bg);
+  border: none;
+  padding: 0.4rem;
+  border-radius: 0.4rem;
+  color: white;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.botoes button:hover {
+  background: var(--hover-bot_color);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
 
 @media (max-width: 480px) {
   #cabecalho {
@@ -180,18 +261,20 @@ body {
     gap: 1rem;
     padding: 1rem;
     width: 100dvw;
+    padding-right: 32%;
   }
-  
+
+
   #tag_video {
     flex-direction: column;
     gap: 1rem;
   }
 
-  #filtro_atual_g{
+  #filtro_atual_g {
     display: none;
   }
 
-  #filtro_atual_mo{
+  #filtro_atual_mo {
     display: flex;
     justify-content: center;
     color: var(--color-fil_atu);
@@ -204,16 +287,20 @@ body {
   }
 
   #btns {
-   display: none;
+    display: none;
   }
 
-  #btns_mobile{
+  #galeria_modal{
+    left: 6%; 
+  }
+
+  #btns_mobile {
     display: flex;
     flex-direction: row;
     width: 100dvw;
     position: relative;
-    left: 21%;
-    margin-top: -22%;
+    left: 24%;
+    margin-top: -25%;
   }
 
   .es_btn {
@@ -223,14 +310,29 @@ body {
     margin-left: 2%;
   }
 
-  #galeria_modal{
-     position: relative;
-     top: -50%;
-     left: 0%;
+  .galeria-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
-  #galeria_modal::backdrop{
-     background-color: #000000;
-     transition: background 0.3s ease;   
+
+  .botoes button {
+    padding: 0.2rem;
+    font-size: 0.9rem;
+  }
+
+  .botoes {
+    padding: 0.3rem;
+    gap: 0.2rem;
+    justify-content: space-around;
+  }
+  
+  .img_galeria_content{
+    width: auto;
+    height: auto;
+  }
+
+  .img_galeria_content img {
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
   }
 }
 
@@ -244,6 +346,29 @@ body {
   .es_btn {
     width: 4rem;
     height: 4rem;
+  }
+
+  .galeria-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .botoes button {
+    padding: 0.2rem;
+    font-size: 1rem;
+  }
+
+  .botoes {
+    gap: 0.2rem;
+  }
+ 
+  .img_galeria_content{
+    width: auto;
+    height: auto;
+  }
+
+  .img_galeria_content img {
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
   }
 }
 
