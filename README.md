@@ -96,5 +96,5 @@ Sinta-se à vontade para abrir uma issue ou pull request com sugestões, bugs ou
 ## 👨‍💻 Autor
 
 Desenvolvido com dedicação por: **Anathyon Erysson**  
-📫 anathyonerysson@protonmail.com  
+📫 anathyon@protonmail.com  
 🔗 [LinkedIn](https://www.linkedin.com/in/anathyonerysson/)
