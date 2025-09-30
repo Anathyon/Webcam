@@ -1,88 +1,112 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Webcam</title>
-  <link rel="icon" href="CSS/svg/camera.svg">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-  <link rel="stylesheet" href="/CSS/index.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio Vision - Webcam Creative</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="./CSS/index.css">
 </head>
-<body>
-  <header id="cabecalho">
-    <img src="/CSS/imagens/2-removebg-preview.png" alt="Logo" draggable="false" id="img_hedd">
-     
-      <p id="filtro_atual_g">Filtro atual: Nenhum</p>
+<body class="theme--dark"> 
+    
+    <header class="header">
+        <div class="header__logo">
+            <img src="/CSS/imagens/logo.png" alt="Studio Vision Logo">
+        </div>
 
-      <div id="btns_mobile">
-         <button id="it_foto_mb" class="es_btn" title="Capturar foto">
-           <i class="bi bi-camera"></i>
-         </button>
-         <button id="it_inverter_mb" class="es_btn" title="Inverter câmera">
-           <i class="bi bi-arrow-repeat"></i>
-         </button>
-         <button id="it_tema_mb" class="es_btn" title="Alternar tema">
-           <i class="bi bi-moon-stars"></i>
-         </button>
-         <button id="it_filtro_mb" class="es_btn" title="Aplicar filtro">
-           <i class="bi bi-palette"></i>
-         </button>
-         <button id="it_share_mb" class="es_btn" title="Compartilhar imagem">
-           <i class="bi bi-share"></i>
-         </button>
-        <button id="bt_ab_galeria_mb" class="es_btn" title="Galeria de imagens" >
-        <i class="bi bi-images"></i>
-      </button>
-      </div>
+        <div class="header__status-desktop">
+            Filtro atual: <span id="filtro-nome">Nenhum</span>
+        </div>
 
-    <ul id="ul_nav">
-      <li class="lis_it">Webcam</li>
-      <li class="lis_it">Filtros</li>
-      <li class="lis_it">Compartilhar</li>
-    </ul>
+        <nav class="header__nav">
+            <li class="header__nav-item" id="nav-item-webcam">Webcam</li>
+            <li class="header__nav-item" id="nav-item-filtros">Filtros</li>
+            <li class="header__nav-item" id="nav-item-compartilhar">Compartilhar</li>
+        </nav>
+        
+        <div class="controls--mobile"></div>
+    </header>
 
-  </header>
+    <main class="main-content">
+        <section class="webcam-area">
+            
+            <div class="webcam-container">
+                <video id="webcam-video" class="webcam-container__media" autoplay></video>
+                <canvas id="webcam-canvas" class="webcam-container__media" style="display: none;"></canvas>
+                
+                <div class="webcam-overlay">
+                    <p class="webcam-overlay__message">Nenhuma câmera foi encontrada. Conecte um dispositivo de vídeo e tente novamente.</p>
+                    <div class="webcam-overlay__status-box">
+                        <span class="webcam-overlay__status">SEM CÂMERA</span>
+                        <span class="webcam-overlay__filter">FILTRO: NENHUM</span>
+                    </div>
+                </div>
+            </div>
 
-  <main id="cont_principal">
+            <div class="controls--desktop">
+                <button class="button-action" id="btn-capturar" title="Capturar Foto"><i class="bi bi-camera"></i></button>
+                <button class="button-action" id="btn-alternar" title="Alternar Câmera"><i class="bi bi-arrow-repeat"></i></button>
+                <button class="button-action" id="btn-compartilhar" title="Compartilhar"><i class="bi bi-share"></i></button>
+                <button class="button-action" id="btn-modo-claro" title="Alternar Tema">
+                    <i class="bi bi-sun" id="theme-icon"></i>
+                </button>
+                <button class="button-action" id="btn-galeria" title="Abrir Galeria"><i class="bi bi-images"></i></button>
+            </div>
+        </section>
 
-    <section id="tag_video">
-      <video id="vid" autoplay muted class="sty_cam_ft"></video>
-      <p id="filtro_atual_mo" style="font-size: 1.6rem; font-weight: bold;">Filtro atual: Nenhum</p>
-      <canvas id="canv" class="sty_cam_ft"></canvas>
-    </section>
+        <aside class="side-panel">
+            
+            <div class="card card--status">
+                <h3 class="card__title">Painel rápido</h3>
+                <div class="status-grid">
+                    <div class="status-box">
+                        <p class="status-box__label">CAPTURAS</p>
+                        <p class="status-box__value" id="capturas-count">00</p>
+                    </div>
+                    <div class="status-box">
+                        <p class="status-box__label">ÚLTIMA FOTO</p>
+                        <p class="status-box__value" id="last-photo-time">—</p>
+                    </div>
+                </div>
+            </div>
 
-    <section id="btns">
-      <button id="it_foto" class="es_btn" title="Capturar foto">
-        <i class="bi bi-camera"></i>
-      </button>
-      <button id="it_inverter" class="es_btn" title="Inverter câmera">
-        <i class="bi bi-arrow-repeat"></i>
-      </button>
-      <button id="it_tema" class="es_btn" title="Alternar tema">
-        <i class="bi bi-moon-stars" id="alter_modo"></i>
-      </button>
-      <button id="it_filtro" class="es_btn" title="Aplicar filtro">
-        <i class="bi bi-palette"></i>
-      </button>
-      <button id="it_share" class="es_btn" title="Compartilhar imagem">
-        <i class="bi bi-share"></i>
-      </button>
-      <button id="bt_ab_galeria" class="es_btn" title="Galeria de imagens" >
-        <i class="bi bi-images"></i>
-      </button>
-    </section>
-  </main>
+            <div class="card card--preview">
+                <div class="card__header">
+                    <h3 class="card__title">Prévia da galeria</h3>
+                    <button class="btn btn--small" id="btn-abrir-galeria">ABRIR</button>
+                </div>
+                <p class="card__description">Visualize rapidamente o seu último registro e gerencie os arquivos.</p>
+                <div class="gallery-preview">
+                    <i class="bi bi-image"></i>
+                    <p>Nenhuma foto por aqui ainda</p>
+                    <p class="gallery-preview__hint">Capture momentos usando o botão principal para começar a preencher sua galeria.</p>
+                </div>
+            </div>
 
-  <section id="content_dialog">
-       <dialog id="galeria_modal" class="modal">
-        <h2>Minhas Fotos</h2>   
-        <section class="modal-content">      
-             <div id="galeria_img" class="galeria-grid"></div>
-           </section>
-            <button id="bt_fechar" class="close">&times;</button>
-      </dialog> 
-  </section>
+            <div class="card card--filters">
+                <div class="card__header">
+                    <h3 class="card__title">Explorador de filtros</h3>
+                    <span class="card__count" id="filter-count">1/17</span>
+                </div>
+                <p class="card__description">Gire entre estilos visuais para obter o clima perfeito em cada clique.</p>
+                
+                <ul class="filter-list">
+                    <li class="filter-item filter-item--active" data-filter="none">
+                        <span class="filter-item__name">Nenhum</span>
+                        <span class="filter-item__status">ATUAL</span>
+                    </li>
+                    <li class="filter-item" data-filter="opacity-contrast">
+                        <span class="filter-item__name">Opacidade 50% + Contraste 150%</span>
+                        <button class="btn btn--apply">APLICAR</button>
+                    </li>
+                    </ul>
+            </div>
+        </aside>
+    </main>
+    
+    <dialog class="modal" id="gallery-modal">
+        </dialog>
 
-  <script type="module" src="script_js/index.js"></script>
+    <script src="/script_js/index.js"></script>
 </body>
 </html>

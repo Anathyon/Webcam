@@ -1,379 +1,415 @@
 @import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css');
 
+/* ----------------------------------- */
+/* RESET */
+/* ----------------------------------- */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
+/* ----------------------------------- */
+/* 1. VARIÁVEIS DE TEMA (Padrão: ESCURO) */
+/* ----------------------------------- */
 :root {
-  --header-bg: #000000c5;
-  --alt-header-bg: #ffffff8f;
-  --bg-url: url(./imagens/Sua\ camera.png);
-  --alt-bg-url: url(./imagens/image.png);
-  --btn-bg: #ffffffbe;
-  --alt-btn-bg: #000000;
-  --font-family: "Barlow", sans-serif;
-  --ic-color: #000000; 
-  --color-fil_atu: #000;
-  --color-fil_atud: #ffffff;
-  --hover-bot_color: #474747;
+    /* Cores Globais */
+    --color-primary: #0a0a0d; /* Fundo principal escuro */
+    --color-secondary: #ffffff; /* Texto claro */
+    --color-accent: #3498db; /* Azul de destaque/ativação */
+    --color-hover: #5d5dff; /* Cor de hover para botões */
+
+    /* Tema Escuro (Padrão) */
+    --body-bg: var(--color-primary);
+    --card-bg: #1c2130; /* Fundo dos cards/modals escuro */
+    --text-main: #e0e0e0;
+    --text-dim: #99a9b5; /* Texto secundário/descrições */
+    --header-bg: #0d121c; 
+    --border-color: #2c3346;
+    --shadow-color: rgba(0, 0, 0, 0.4);
+
+    /* Tipografia */
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.alt_modo {
-  --header-bg: var(--alt-header-bg);
-  --bg-url: var(--alt-bg-url);
-  --btn-bg: var(--alt-btn-bg);
-  --ic-color: #ffffff;
-  --color-fil_atu: #fff;
-  --color-fil_atud: #000000;
-  --hover-bot_color: #747474;
+/* ----------------------------------- */
+/* 2. SOBRESCRITA PARA TEMA CLARO */
+/* ----------------------------------- */
+body.theme--light {
+    --color-primary: #f0f0f0; 
+    --color-secondary: #1a1a1a;
+    --color-accent: #176B87;
+    --color-hover: #83C5BE;
+
+    --body-bg: #ffffff;
+    --card-bg: #e8e8e8;
+    --text-main: #333333;
+    --text-dim: #666666;
+    --header-bg: #f8f8f8; 
+    --border-color: #cccccc;
+    --shadow-color: rgba(0, 0, 0, 0.1);
 }
 
-.lis_it{
-    color: var(--color-fil_atud);
-}
-
-.bi{
-   color: var(--ic-color);
-}
-
-#filtro_atual_mo{
-   display: none;
-}
-
-#filtro_atual_g{
-   color: var(--color-fil_atud);
-}
-
+/* ----------------------------------- */
+/* 3. ESTILOS GERAIS */
+/* ----------------------------------- */
 body {
-  background: var(--bg-url) center center/cover;
-  background-repeat: repeat;
-  background-attachment: fixed;
-  font-family: var(--font-family);
-  font-weight: 100;
-  background-color: #000000;
-  height: 100vh;
+    background-color: var(--body-bg);
+    color: var(--text-main);
+    font-family: var(--font-family);
+    min-height: 100vh;
+    padding: 0;
+    overflow-x: hidden; 
 }
 
-#cabecalho {
-  background-color: var(--header-bg);
-  display: flex;
-  align-items: center;
-  padding: 1rem 2rem;
-  border-radius: 1rem;
-  gap: 1rem;
+/* Estilo do Card/Container Base (Webcam, Sidebars) */
+.card, .webcam-container {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 1.5rem;
+    box-shadow: 0 8px 15px var(--shadow-color);
+    padding: 2rem;
+    position: relative;
 }
 
-#img_hedd {
-  width: 4rem;
-  height: 4rem;
+/* ----------------------------------- */
+/* 4. HEADER */
+/* ----------------------------------- */
+.header {
+    background-color: var(--header-bg);
+    display: grid;
+    /* Logo | Status | Nav */
+    grid-template-areas: 
+        "logo status nav"
+        "mobile mobile mobile";
+    grid-template-columns: auto 1fr auto; 
+    align-items: center;
+    padding: 1rem 3rem;
+    border-radius: 0 0 1rem 1rem;
+    box-shadow: 0 4px 10px var(--shadow-color);
+    position: fixed; /* Fixa o header no topo */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
 }
 
-#ul_nav {
-  display: flex;
-  list-style: none;
-  gap: 2rem;
-  margin-left: auto;
-  color: white;
+.header__logo {
+    grid-area: logo;
+    width: 10rem; /* Ajuste o tamanho do logo */
+    height: auto;
+}
+.header__logo img {
+    width: 100%;
+    display: block;
+    filter: drop-shadow(0 0 1px var(--color-accent));
 }
 
-#cont_principal {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 1rem auto;
-  width: 95vw;
-  height: auto;
+.header__status-desktop {
+    grid-area: status;
+    justify-self: start;
+    color: var(--text-dim);
+    font-size: 1.1rem;
+    font-weight: 500;
+    padding-left: 1.5rem;
+}
+#filtro-nome {
+    font-weight: 700;
+    color: var(--color-accent);
 }
 
-#tag_video {
-  display: flex;
-  gap: 2rem;
-  width: 100%;
-  flex-wrap: wrap;
-  justify-content: center;
+.header__nav {
+    grid-area: nav;
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
 }
 
-#vid,
-#canv {
-  width: 45%;
-  height: 60vh;
-  object-fit: cover;
-  border-radius: 1rem;
-  box-shadow: 0 0 10px #0000005e;
+.header__nav-item {
+    color: var(--text-main);
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.2s, text-shadow 0.2s;
+    font-size: 1.1rem;
 }
 
-.sty_cam_ft {
-  border-radius: 1.2rem;
+.header__nav-item:hover {
+    color: var(--color-accent);
+    text-shadow: 0 0 5px var(--color-accent);
 }
 
-#btns {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  margin-top: 1.5rem;
-  flex-wrap: wrap;
+/* ----------------------------------- */
+/* 5. MAIN CONTENT (LAYOUT GRID PRINCIPAL) */
+/* ----------------------------------- */
+.main-content {
+    display: grid;
+    /* Adicione padding no topo para o conteúdo não ficar por baixo do header fixo */
+    padding: calc(1rem + 6rem) 2rem 2rem 2rem; 
+    
+    /* Layout para desktop: 2/3 para webcam e 1/3 para sidebars */
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
-.img_galeria_content{
-   height: 10dvh;
-   width: 10dvw;
-}
-
-.es_btn {
-  width: 4.5rem;
-  height: 4.5rem;
-  border-radius: 50%;
-  background-color: var(--btn-bg);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-
-.es_btn:hover {
-  transform: scale(1.1);
-}
-
-#it_foto {
-  touch-action: manipulation;
-}
-
-#btns_mobile{
-    display: none;
-}
-
-.modal::backdrop {
-  background-color: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(4px);
-}
-
-.modal {
-  border: none;
-  border-radius: 1rem;
-  padding: 2rem;
-  width: 100dvw;
-  height: 100dvh;
-  overflow-y: auto;
-  background: linear-gradient(120deg, #000000bb, #9494948f);
-  color: #fff;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
-  animation: fadeIn 0.3s ease-in-out;
-  position: relative;
-  left: 1.5%;
-  top: 1.5%;
-}
-
-.modal h2 {
-  font-size: 2rem;
-  margin-bottom: 2rem;
-  text-align: center;
-  font-weight: 600;
-}
-
-.close {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: transparent;
-  border: none;
-  font-size: 2rem;
-  color: #fff;
-  cursor: pointer;
-}
-
-.galeria-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1rem;
-  padding: 1rem;
-}
-
-.img_galeria_content {
- background: #111;
-  border-radius: 0.6rem;
-  overflow: hidden;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  transition: transform 0.3s;
-  width: 15dvw;
-  height: auto;
-  padding: 10%;
-}
-
-.img_galeria_content:hover {
-  transform: scale(1.02);
-}
-
-.img_galeria_content img {
-  height: 20%;
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  display: block;
-  border-bottom: 1px solid #222;
-}
-
-.botoes {
-display: flex;
-  justify-content: space-around;
-  align-items: center;
-  background: #1b1b1b;
-  padding: 0.4rem;
-  gap: 0.3rem;
-  margin-top: 3%;
-  border-radius: 1.2rem;
-}
-
-.botoes button {
-  background: var(--btn-bg);
-  border: none;
-  padding: 0.4rem;
-  border-radius: 0.4rem;
-  color: white;
-  font-size: 1.1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.2s;
-}
-
-.botoes button:hover {
-  background: var(--hover-bot_color);
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-
-@media (max-width: 480px) {
-  #cabecalho {
+/* ----------------------------------- */
+/* 6. WEBCAM AREA (CAIXA PRINCIPAL DA CÂMERA) */
+/* ----------------------------------- */
+.webcam-area {
+    display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-    padding: 1rem;
-    width: 100dvw;
-    padding-right: 32%;
-  }
+    gap: 1.5rem;
+}
 
-
-  #tag_video {
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  #filtro_atual_g {
-    display: none;
-  }
-
-  #filtro_atual_mo {
+.webcam-container {
+    padding: 1.5rem;
+    height: 70vh;
     display: flex;
     justify-content: center;
-    color: var(--color-fil_atu);
-  }
+    align-items: center;
+    overflow: hidden;
+}
 
-  #vid,
-  #canv {
+.webcam-container__media {
     width: 100%;
-    height: 40vh;
-  }
+    height: 100%;
+    object-fit: cover;
+    border-radius: 1rem;
+}
 
-  #btns {
-    display: none;
-  }
+.webcam-overlay {
+    position: absolute;
+    text-align: center;
+}
 
-  #galeria_modal{
-    left: 6%; 
-  }
-
-  #btns_mobile {
-    display: flex;
-    flex-direction: row;
-    width: 100dvw;
-    position: relative;
-    left: 24%;
-    margin-top: -25%;
-  }
-
-  .es_btn {
-    width: 2.5rem;
-    height: 2.5rem;
+.webcam-overlay__message {
     font-size: 1.2rem;
-    margin-left: 2%;
-  }
+    max-width: 300px;
+    color: var(--text-dim);
+    margin-bottom: 2rem;
+}
 
-  .galeria-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.webcam-overlay__status-box {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+}
 
-  .botoes button {
-    padding: 0.2rem;
+.webcam-overlay__status, .webcam-overlay__filter {
+    color: var(--color-accent);
+    padding: 0.5rem 1.5rem;
+    border: 1px solid var(--color-accent);
+    border-radius: 0.5rem;
+    font-weight: bold;
     font-size: 0.9rem;
-  }
-
-  .botoes {
-    padding: 0.3rem;
-    gap: 0.2rem;
-    justify-content: space-around;
-  }
-  
-  .img_galeria_content{
-    width: auto;
-    height: auto;
-  }
-
-  .img_galeria_content img {
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-  }
 }
 
-@media (min-width: 481px) and (max-width: 1024px) {
-  #vid,
-  #canv {
-    width: 48%;
-    height: 45vh;
-  }
-
-  .es_btn {
-    width: 4rem;
-    height: 4rem;
-  }
-
-  .galeria-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .botoes button {
-    padding: 0.2rem;
-    font-size: 1rem;
-  }
-
-  .botoes {
-    gap: 0.2rem;
-  }
- 
-  .img_galeria_content{
-    width: auto;
-    height: auto;
-  }
-
-  .img_galeria_content img {
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-  }
+/* ----------------------------------- */
+/* 7. CONTROLES DE AÇÃO (BOTÕES) */
+/* ----------------------------------- */
+.controls--desktop {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 1rem;
 }
 
-@media (hover: none) and (pointer: coarse) {
-  .es_btn {
-    touch-action: manipulation;
-  }
+.button-action {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    background-color: var(--card-bg);
+    border: 2px solid var(--border-color); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+.button-action .bi {
+    color: var(--text-main);
+    transition: color 0.3s;
+}
+
+.button-action:hover {
+    transform: translateY(-3px);
+    background-color: var(--color-hover);
+    border-color: var(--color-hover);
+    box-shadow: 0 6px 10px var(--shadow-color);
+}
+
+.button-action:hover .bi {
+    color: var(--color-secondary); /* Ícone branco no hover */
+}
+
+/* ----------------------------------- */
+/* 8. SIDEBARS (Painéis) */
+/* ----------------------------------- */
+.side-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.card__title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.card__description {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+
+/* --- Painel Rápido --- */
+.status-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.status-box {
+    background-color: var(--header-bg);
+    padding: 1rem;
+    border-radius: 0.8rem;
+    border: 1px solid var(--border-color);
+}
+
+.status-box__label {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    margin-bottom: 0.2rem;
+}
+
+.status-box__value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--color-accent);
+}
+
+/* --- Prévia da Galeria --- */
+.card--preview .card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.btn--small {
+    background-color: var(--color-accent);
+    color: var(--color-secondary);
+    border: none;
+    padding: 0.4rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.btn--small:hover {
+    background-color: var(--color-hover);
+}
+
+.gallery-preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--header-bg);
+    border: 2px dashed var(--border-color);
+    border-radius: 1rem;
+    padding: 2rem 1rem;
+    text-align: center;
+    min-height: 150px;
+}
+.gallery-preview i {
+    font-size: 3rem;
+    color: var(--text-dim);
+    margin-bottom: 0.5rem;
+}
+.gallery-preview__hint {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    margin-top: 0.5rem;
+}
+
+/* --- Explorador de Filtros --- */
+.card--filters .card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.card__count {
+    color: var(--text-dim);
+    font-weight: 600;
+}
+
+.filter-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 1rem;
+}
+
+.filter-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--header-bg);
+    border-radius: 0.75rem;
+    padding: 0.8rem 1.2rem;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border: 1px solid transparent;
+}
+.filter-item:hover {
+    background-color: var(--border-color);
+}
+
+.filter-item__name {
+    font-weight: 500;
+    color: var(--text-main);
+}
+
+.btn--apply {
+    background: none;
+    color: var(--text-dim);
+    border: 1px solid var(--text-dim);
+    padding: 0.3rem 0.8rem;
+    border-radius: 0.4rem;
+    font-size: 0.75rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.btn--apply:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+}
+
+/* Estilo para o item ATUAL (como na imagem) */
+.filter-item--active {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+}
+.filter-item--active .filter-item__name {
+    color: var(--color-secondary);
+}
+.filter-item--active .filter-item__status {
+    color: var(--color-secondary);
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+.filter-item--active .btn--apply {
+    display: none; /* Esconde o botão se for o filtro atual */
 }
