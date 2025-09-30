@@ -96,7 +96,7 @@ body {
 
 .header__logo {
     grid-area: logo;
-    width: 10rem; /* Ajuste o tamanho do logo */
+    width: 3.8rem;
     height: auto;
 }
 .header__logo img {
@@ -412,4 +412,133 @@ body {
 }
 .filter-item--active .btn--apply {
     display: none; /* Esconde o botão se for o filtro atual */
+}
+
+.modal::backdrop {
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px); 
+}
+
+/* Estilo do Container Principal do Modal */
+.modal {
+    border: 1px solid var(--border-color);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    width: 95vw;
+    max-width: 1200px; /* Largura máxima em desktop */
+    max-height: 95vh;
+    overflow-y: auto; /* Permite scroll se o conteúdo for muito grande */
+    background-color: var(--card-bg); /* Fundo escuro do card/painel */
+    color: var(--text-main);
+    box-shadow: 0 0 30px var(--shadow-color);
+    /* Centralização Fixa */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Botão Fechar Modal (canto superior direito) */
+#btn-fechar-modal {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    font-size: 1rem;
+    color: var(--text-main);
+    background: var(--header-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+#btn-fechar-modal:hover {
+    background-color: var(--color-accent);
+    color: var(--color-secondary);
+    border-color: var(--color-accent);
+}
+
+/* Título e Descrição do Modal */
+.modal__title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text-main);
+}
+
+.modal__description {
+    color: var(--text-dim);
+    margin-bottom: 2rem;
+    font-size: 1rem;
+}
+
+/* --- GALERIA GRID (Grade das Fotos) --- */
+.galeria-grid {
+    display: grid;
+    /* Grid responsivo: 4 colunas em desktop, adaptando para telas menores */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+    gap: 1.5rem;
+    padding: 1rem;
+    background-color: var(--header-bg); /* Um fundo levemente mais escuro para o grid, como um container interno */
+    border-radius: 1rem;
+}
+
+/* Container Individual da Foto */
+.img_galeria_content {
+    background: var(--body-bg);
+    border-radius: 0.6rem;
+    overflow: hidden;
+    box-shadow: 0 4px 14px var(--shadow-color);
+    transition: transform 0.3s;
+    border: 1px solid var(--border-color);
+}
+
+.img_galeria_content:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px var(--color-accent); /* Efeito de destaque azul no hover */
+}
+
+.img_galeria_content img {
+    width: 100%;
+    /* Mantém uma proporção visualmente agradável */
+    aspect-ratio: 4 / 3; 
+    object-fit: cover;
+    display: block;
+    user-select: none; /* Evita seleção de imagem */
+}
+
+/* Botões (Compartilhar, Baixar, Deletar) */
+.botoes {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: var(--header-bg);
+    padding: 0.6rem;
+}
+
+.botoes button {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.botoes button i {
+    color: var(--text-dim); 
+    transition: color 0.2s;
+}
+
+.botoes button:hover {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+}
+.botoes button:hover i {
+    color: var(--color-secondary); /* Ícone branco no hover azul */
 }

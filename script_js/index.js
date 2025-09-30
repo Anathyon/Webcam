@@ -5,25 +5,30 @@
 // Elementos da Câmera e Canvas
 const video = document.querySelector('#webcam-video');
 const canvas = document.querySelector('#webcam-canvas');
+const webcamOverlay = document.querySelector('#webcam-overlay');
+video.disablePictureInPicture = true;
 // Elementos de Status e Filtro
 const filtroNomeDesktop = document.querySelector('#filtro-nome');
-const filtroNomeMobile = document.querySelector('.filter-status--mobile'); // Usando a classe para status mobile, se implementada
-const webcamOverlay = document.querySelector('.webcam-overlay');
+const filtroStatusOverlay = document.querySelector('#filtro-status-overlay');
+const filterListUl = document.querySelector('#filter-list');
+const filterCountSpan = document.querySelector('#filter-count');
 // Botões de Ação
 const btnCapturar = document.querySelector('#btn-capturar');
 const btnAlternar = document.querySelector('#btn-alternar');
 const btnTema = document.querySelector('#btn-modo-claro');
 const btnCompartilhar = document.querySelector('#btn-compartilhar');
-const btnGaleria = document.querySelector('#btn-galeria');
 const themeIcon = document.querySelector('#theme-icon');
+const headerLogo = document.querySelector('#header-logo');
 // Galeria e Modal
 const galleryModal = document.querySelector('#gallery-modal');
-const btnAbrirGaleria = document.querySelector('#btn-abrir-galeria');
-const btnFecharModal = document.querySelector('.modal .close'); // Se você usar a classe 'close'
-const galeriaGrid = document.querySelector('.galeria-grid'); // Nova classe para a grade da galeria
-// Outros
+const btnAbrirGaleriaDesktop = document.querySelector('#btn-abrir-galeria-desktop');
+const btnAbrirGaleriaPreview = document.querySelector('#btn-abrir-galeria-preview');
+const btnFecharModal = document.querySelector('#btn-fechar-modal');
+const galeriaGrid = document.querySelector('#galeria-grid');
+const galleryPreview = document.querySelector('#gallery-preview');
+// Painel Rápido
 const capturasCount = document.querySelector('#capturas-count');
-video.disablePictureInPicture = true;
+const lastPhotoTime = document.querySelector('#last-photo-time');
 const filtros = [
     { nome: 'Nenhum', valor: 'none' },
     { nome: 'Opacidade 50% + Contraste 150%', valor: 'opacity(50%) contrast(150%)' },
@@ -47,93 +52,17 @@ let filtroAtualIndex = 0;
 let streamAtual = null;
 let usandoCamFront = true;
 // ===================================================
-// 3. FUNÇÕES DA GALERIA (CRUD)
+// 3. FUNÇÕES DE CÂMERA E FILTRO
 // ===================================================
-const getFotos = () => {
-    return JSON.parse(localStorage.getItem('fotos') || '[]');
-};
-const salvarFoto = (dataUrl) => {
-    const fotos = getFotos();
-    fotos.push({ id: Date.now().toString(), dataUrl });
-    localStorage.setItem('fotos', JSON.stringify(fotos));
-    // Atualiza contadores
-    if (capturasCount) {
-        capturasCount.textContent = fotos.length.toString().padStart(2, '0');
-    }
-};
-const renderizarGaleria = () => {
-    const fotos = getFotos();
-    // Verifica se o elemento existe no DOM antes de tentar limpar
-    if (!galeriaGrid)
-        return;
-    galeriaGrid.innerHTML = '';
-    fotos.reverse().forEach(foto => {
-        const div = document.createElement('div');
-        div.setAttribute("class", "img_galeria_content");
-        div.innerHTML = `
-            <img src="${foto.dataUrl}" draggable="false" alt="Foto da Galeria">
-            <div class="botoes">
-                <button onclick="baixarFoto('${foto.dataUrl}')" title="Baixar">
-                    <i class="bi bi-download"></i>
-                </button>
-                <button onclick="compartilharFotoGaleria('${foto.dataUrl}')" title="Compartilhar">
-                    <i class="bi bi-share"></i>  
-                </button>
-                <button onclick="deletarFoto('${foto.id}')" title="Deletar">
-                    <i class="bi bi-trash"></i>           
-                </button>
-            </div>
-        `;
-        galeriaGrid.appendChild(div);
-    });
-};
-window.baixarFoto = (dataUrl) => {
-    const link = document.createElement('a');
-    link.href = dataUrl;
-    link.download = `foto-${Date.now()}.png`;
-    link.click();
-};
-window.deletarFoto = (id) => {
-    const fotos = getFotos();
-    const atualizadas = fotos.filter(f => f.id !== id);
-    localStorage.setItem('fotos', JSON.stringify(atualizadas));
-    // Atualiza contadores
-    if (capturasCount) {
-        capturasCount.textContent = atualizadas.length.toString().padStart(2, '0');
-    }
-    renderizarGaleria();
-};
-window.compartilharFotoGaleria = async (dataUrl) => {
-    if (navigator.canShare && navigator.canShare({ files: [] })) {
-        try {
-            const blob = await (await fetch(dataUrl)).blob();
-            const file = new File([blob], 'foto.png', { type: blob.type });
-            await navigator.share({
-                files: [file],
-                title: 'Minha Foto do Studio Vision',
-                text: 'Confira a foto que capturei!'
-            });
-        }
-        catch (err) {
-            // O erro pode ser o usuário cancelando o compartilhamento
-            console.error('Erro ou cancelamento no compartilhamento:', err);
-            // alert('Não foi possível compartilhar a foto.');
-        }
-    }
-    else {
-        alert('Compartilhamento via Web Share API não suportado neste navegador.');
-    }
-};
-// ===================================================
-// 4. LÓGICA DE AÇÕES E CÂMERA
-// ===================================================
+/** Inicia ou troca a câmera, solicitando permissão se necessário. */
 async function iniciarCamera(frontal = true) {
     if (streamAtual) {
         streamAtual.getTracks().forEach(track => track.stop());
     }
-    // Oculta o vídeo temporariamente para evitar flash
     video.style.display = 'none';
-    webcamOverlay.style.display = 'flex'; // Exibe o overlay de "Carregando" ou "Sem Câmera"
+    webcamOverlay.style.display = 'flex';
+    // Atualiza o status de filtro no overlay, pois o filtro inicial é 'Nenhum'
+    aplicarFiltro(filtroAtualIndex, false);
     const constraints = {
         video: {
             facingMode: frontal ? 'user' : 'environment',
@@ -145,49 +74,20 @@ async function iniciarCamera(frontal = true) {
     try {
         streamAtual = await navigator.mediaDevices.getUserMedia(constraints);
         video.srcObject = streamAtual;
-        video.style.display = 'block'; // Exibe o vídeo
-        webcamOverlay.style.display = 'none'; // Oculta o overlay
+        video.style.display = 'block';
+        webcamOverlay.style.display = 'none';
     }
     catch (error) {
-        // Se houver erro, garante que o overlay seja exibido com a mensagem de erro
         webcamOverlay.style.display = 'flex';
         console.error("Erro ao iniciar a câmera:", error);
-        // Não usamos alert em produção, mas mantendo para fins de debug
-        // alert('Erro ao acessar a câmera! Verifique as permissões.');
     }
 }
-// Lógica de Captura
-btnCapturar?.addEventListener('click', () => {
-    if (!streamAtual) {
-        alert("Nenhuma câmera ativa para capturar.");
-        return;
+/** Aplica um filtro CSS à webcam e atualiza os textos de status. */
+const aplicarFiltro = (index, updateGlobalIndex = true) => {
+    const filtro = filtros[index];
+    if (updateGlobalIndex) {
+        filtroAtualIndex = index;
     }
-    const ctx = canvas.getContext('2d');
-    if (!ctx)
-        return;
-    // Configura o canvas para o tamanho do vídeo
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    // Aplica o filtro CSS do vídeo ao contexto do canvas
-    ctx.filter = video.style.filter || 'none';
-    // Desenha o frame atual do vídeo no canvas
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-    const dataUrl = canvas.toDataURL('image/png');
-    salvarFoto(dataUrl);
-    // Atualiza a galeria caso o modal esteja aberto
-    if (galleryModal.open) {
-        renderizarGaleria();
-    }
-});
-// Lógica de Alternar Câmera
-btnAlternar?.addEventListener('click', () => {
-    usandoCamFront = !usandoCamFront;
-    iniciarCamera(usandoCamFront);
-});
-// Lógica de Troca de Filtro
-const aplicarProximoFiltro = () => {
-    filtroAtualIndex = (filtroAtualIndex + 1) % filtros.length;
-    const filtro = filtros[filtroAtualIndex];
     if (video) {
         video.style.filter = filtro.valor;
     }
@@ -195,82 +95,212 @@ const aplicarProximoFiltro = () => {
     if (filtroNomeDesktop) {
         filtroNomeDesktop.textContent = filtro.nome;
     }
-    if (filtroNomeMobile) {
-        filtroNomeMobile.textContent = `Filtro atual: ${filtro.nome}`;
+    if (filtroStatusOverlay) {
+        filtroStatusOverlay.textContent = `FILTRO: ${filtro.nome.toUpperCase()}`;
     }
+    renderizarListaFiltros();
 };
-btnTema?.addEventListener('click', () => {
-    document.body.classList.toggle('theme--light');
-    document.body.classList.toggle('theme--dark');
-    // Atualiza o ícone do tema
-    if (themeIcon) {
-        const isDark = document.body.classList.contains('theme--dark');
-        themeIcon.className = isDark ? 'bi bi-sun' : 'bi bi-moon-stars';
+// ===================================================
+// 4. LÓGICA DA GALERIA (CRUD, RENDER, PRÉVIA)
+// ===================================================
+const getFotos = () => {
+    return JSON.parse(localStorage.getItem('fotos') || '[]');
+};
+/** Renderiza a última foto na prévia da galeria (sidebar) */
+const renderizarPreview = () => {
+    const fotos = getFotos();
+    if (!galleryPreview)
+        return;
+    if (fotos.length === 0) {
+        galleryPreview.innerHTML = `
+            <i class="bi bi-image"></i>
+            <p>Nenhuma foto por aqui ainda</p>
+            <p class="gallery-preview__hint">Capture momentos usando o botão principal para começar a preencher sua galeria.</p>
+        `;
+        lastPhotoTime.textContent = '—';
     }
-});
-// Lógica de Compartilhamento Direto da Webcam
-btnCompartilhar?.addEventListener('click', async () => {
-    // 1. Captura o frame atual para o canvas (com filtro)
-    if (!streamAtual) {
-        alert("Nenhuma imagem para compartilhar.");
+    else {
+        const ultimaFoto = fotos[fotos.length - 1];
+        const dataFoto = new Date(ultimaFoto.timestamp);
+        const horaMinuto = dataFoto.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        galleryPreview.innerHTML = `
+            <img src="${ultimaFoto.dataUrl}" alt="Última foto" style="width: 100%; height: 100%; object-fit: cover; border-radius: 1rem;">
+        `;
+        lastPhotoTime.textContent = horaMinuto;
+    }
+    capturasCount.textContent = fotos.length.toString().padStart(2, '0');
+};
+const salvarFoto = (dataUrl) => {
+    const fotos = getFotos();
+    const novaFoto = { id: Date.now().toString(), dataUrl, timestamp: Date.now() };
+    fotos.push(novaFoto);
+    localStorage.setItem('fotos', JSON.stringify(fotos));
+    renderizarPreview(); // Atualiza a prévia imediatamente
+};
+/** Renderiza o modal da galeria com todas as fotos. */
+const renderizarGaleria = () => {
+    const fotos = getFotos().reverse(); // Exibe a mais recente primeiro
+    if (!galeriaGrid)
+        return;
+    if (fotos.length === 0) {
+        // Estilo de "Nenhuma foto" no modal, como na imagem 213253.png
+        galeriaGrid.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 5rem 0; border: 1px dashed var(--border-color); border-radius: 1rem;">
+                <i class="bi bi-image" style="font-size: 4rem; color: var(--text-dim);"></i>
+                <h3 style="margin-top: 1rem; color: var(--text-main);">Nenhuma foto por aqui ainda</h3>
+                <p style="color: var(--text-dim); margin-top: 0.5rem;">Capture momentos usando o botão principal para começar a preencher sua galeria.</p>
+            </div>
+        `;
         return;
     }
-    btnCapturar?.click(); // Simula a captura para o canvas
-    canvas.toBlob(async (blob) => {
-        if (!blob)
-            return;
-        const arquivo = new File([blob], 'foto-compartilhada.png', { type: 'image/png' });
-        if (navigator.canShare && navigator.canShare({ files: [arquivo] })) {
-            try {
-                await navigator.share({
-                    files: [arquivo],
-                    title: 'Studio Vision Photo',
-                    text: 'Capturei uma foto incrível!'
-                });
-            }
-            catch (err) {
-                // Erro ou cancelamento pelo usuário
-                console.error('Erro ao compartilhar:', err);
-            }
+    galeriaGrid.innerHTML = '';
+    fotos.forEach(foto => {
+        const div = document.createElement('div');
+        div.setAttribute("class", "img_galeria_content");
+        div.innerHTML = `
+            <img src="${foto.dataUrl}" draggable="false" alt="Foto da Galeria">
+            <div class="botoes">
+                <button onclick="window.baixarFoto('${foto.dataUrl}')" title="Baixar">
+                    <i class="bi bi-download"></i>
+                </button>
+                <button onclick="window.compartilharFotoGaleria('${foto.dataUrl}')" title="Compartilhar">
+                    <i class="bi bi-share"></i>  
+                </button>
+                <button onclick="window.deletarFoto('${foto.id}')" title="Deletar">
+                    <i class="bi bi-trash"></i>           
+                </button>
+            </div>
+        `;
+        galeriaGrid.appendChild(div);
+    });
+};
+// Tornando as funções acessíveis globalmente para os botões 'onclick'
+window.baixarFoto = (dataUrl) => {
+    const link = document.createElement('a');
+    link.href = dataUrl;
+    link.download = `foto-studiovision-${Date.now()}.png`;
+    link.click();
+};
+window.deletarFoto = (id) => {
+    const fotos = getFotos();
+    const atualizadas = fotos.filter(f => f.id !== id);
+    localStorage.setItem('fotos', JSON.stringify(atualizadas));
+    renderizarPreview(); // Atualiza contadores e prévia
+    renderizarGaleria(); // Atualiza a galeria se o modal estiver aberto
+};
+window.compartilharFotoGaleria = async (dataUrl) => {
+    try {
+        const blob = await (await fetch(dataUrl)).blob();
+        const file = new File([blob], 'foto.png', { type: blob.type });
+        // CORREÇÃO: Verifica se é possível compartilhar o tipo de arquivo
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            await navigator.share({
+                files: [file],
+                title: 'Minha Foto do Studio Vision',
+                text: 'Confira a foto que capturei!'
+            });
         }
         else {
-            alert('Compartilhamento não suportado neste dispositivo.');
+            alert('Compartilhamento de arquivos não suportado neste dispositivo.');
         }
-    }, 'image/png');
+    }
+    catch (err) {
+        // Erro ou cancelamento no compartilhamento
+        console.error('Erro no compartilhamento:', err);
+    }
+};
+// ===================================================
+// 5. EXPLORADOR DE FILTROS DINÂMICO
+// ===================================================
+/** Gera a lista de filtros na sidebar. */
+const renderizarListaFiltros = () => {
+    if (!filterListUl)
+        return;
+    filterListUl.innerHTML = '';
+    filterCountSpan.textContent = `${filtroAtualIndex + 1}/${filtros.length}`;
+    filtros.forEach((filtro, index) => {
+        const li = document.createElement('li');
+        li.classList.add('filter-item');
+        if (index === filtroAtualIndex) {
+            li.classList.add('filter-item--active');
+        }
+        li.setAttribute('data-index', index.toString());
+        li.innerHTML = `
+            <span class="filter-item__name">${filtro.nome}</span>
+            ${index === filtroAtualIndex
+            ? '<span class="filter-item__status">ATUAL</span>'
+            : '<button class="btn btn--apply">APLICAR</button>'}
+        `;
+        li.addEventListener('click', (e) => {
+            // Se o clique for no botão 'APLICAR' ou no item
+            if (e.target instanceof HTMLButtonElement || e.target === li) {
+                aplicarFiltro(index);
+            }
+        });
+        filterListUl.appendChild(li);
+    });
+};
+// ===================================================
+// 6. EVENT LISTENERS
+// ===================================================
+// Captura de Foto
+btnCapturar?.addEventListener('click', () => {
+    if (!streamAtual) {
+        alert("Câmera não ativa.");
+        return;
+    }
+    const ctx = canvas.getContext('2d');
+    if (!ctx)
+        return;
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    ctx.filter = video.style.filter || 'none';
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    const dataUrl = canvas.toDataURL('image/png');
+    salvarFoto(dataUrl);
 });
-// ===================================================
-// 5. EVENT LISTENERS DO MODAL E INICIAÇÃO
-// ===================================================
-// Botões de Galeria
-[btnGaleria, btnAbrirGaleria].forEach(botao => {
-    botao?.addEventListener('click', () => {
+// Alternar Câmera
+btnAlternar?.addEventListener('click', () => {
+    usandoCamFront = !usandoCamFront;
+    iniciarCamera(usandoCamFront);
+});
+// Alternar Tema
+btnTema?.addEventListener('click', () => {
+    const body = document.body;
+    const isDark = body.classList.contains('theme--dark');
+    body.classList.toggle('theme--dark', !isDark);
+    body.classList.toggle('theme--light', isDark);
+    if (themeIcon) {
+        themeIcon.className = isDark ? 'bi bi-moon-stars' : 'bi bi-sun';
+    }
+    if (headerLogo) {
+        if (body.classList.contains('theme--light')) {
+            headerLogo.src = '/CSS/img/logo-light.png';
+        }
+        else {
+            headerLogo.src = '/CSS/img/logo-dark.png';
+        }
+    }
+});
+// Abrir Modal da Galeria
+[btnAbrirGaleriaDesktop, btnAbrirGaleriaPreview].forEach(btn => {
+    btn?.addEventListener('click', () => {
         galleryModal?.showModal();
-        renderizarGaleria(); // Renderiza sempre que o modal abre
+        renderizarGaleria();
     });
 });
-// Botão de Fechar Modal
+// Fechar Modal da Galeria
 btnFecharModal?.addEventListener('click', () => {
     galleryModal?.close();
 });
-// Evento de Iniciação
+// ===================================================
+// 7. INICIALIZAÇÃO
+// ===================================================
 document.addEventListener('DOMContentLoaded', () => {
+    // 1. Inicia a câmera (e aplica o filtro 'Nenhum' por padrão)
     iniciarCamera(usandoCamFront);
-    aplicarProximoFiltro(); // Aplica o filtro 'Nenhum' ou o primeiro da lista
-    // Atualiza o contador de capturas iniciais
-    if (capturasCount) {
-        capturasCount.textContent = getFotos().length.toString().padStart(2, '0');
-    }
-    // Associa a função de filtro ao botão (agora que ela está definida)
-    const navBtnFiltro = document.querySelector('#nav-item-filtros');
-    navBtnFiltro?.addEventListener('click', aplicarProximoFiltro);
+    // 2. Renderiza a lista de filtros
+    renderizarListaFiltros();
+    // 3. Renderiza a prévia da galeria e contadores
+    renderizarPreview();
 });
-// Associa a função de filtro aos botões de ação (se houver)
-const btnFiltroAction = document.querySelector('#it_filtro'); // ID que estava no seu código original
-if (btnFiltroAction) {
-    btnFiltroAction.addEventListener('click', aplicarProximoFiltro);
-}
-// Associa a função de filtro ao botão do menu
-const btnFiltroNav = document.querySelector('#nav-item-filtros');
-if (btnFiltroNav) {
-    btnFiltroNav.addEventListener('click', aplicarProximoFiltro);
-}
