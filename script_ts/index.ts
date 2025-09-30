@@ -66,7 +66,15 @@ const filtros: Filtro[] = [
     { nome: 'Meio Cinza + Sépia', valor: 'grayscale(50%) sepia(60%)' },
     { nome: 'Contraste Alto + Brilho Reduzido', valor: 'contrast(200%) brightness(80%)' },
     { nome: 'Inversão + Matiz 270°', valor: 'invert(100%) hue-rotate(270deg)' },
-    { nome: 'Desfoque 3px + Brilho 120%', valor: 'blur(3px) brightness(120%)' }
+    { nome: 'Desfoque 3px + Brilho 120%', valor: 'blur(3px) brightness(120%)' },
+    { nome: 'Cores Primárias (Pop)', valor: 'saturate(500%) contrast(120%) hue-rotate(30deg)' },
+    { nome: 'Noturno Antigo (Lomo)', valor: 'contrast(150%) brightness(80%) sepia(30%) hue-rotate(240deg)' },
+    { nome: 'Alto Contraste P&B', valor: 'grayscale(100%) contrast(250%) brightness(80%)' },
+    { nome: 'Sonho Pastel', valor: 'sepia(20%) saturate(150%) brightness(110%) blur(1px) opacity(90%)' },
+    { nome: 'Visão Infravermelho', valor: 'hue-rotate(300deg) contrast(150%) brightness(150%)' },
+    { nome: 'Duotônico (Verde/Roxo)', valor: 'grayscale(100%) contrast(120%) sepia(50%) hue-rotate(120deg)' },
+    { nome: 'Aquarela Borrada', valor: 'blur(2px) saturate(80%)' },
+    { nome: 'Escuridão Profunda', valor: 'brightness(40%) contrast(150%)' }
 ]
 
 let filtroAtualIndex: number = 0;

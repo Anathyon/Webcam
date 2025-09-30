@@ -96,11 +96,17 @@ body {
 
 .header__logo {
     grid-area: logo;
-    width: 3.8rem;
+    /* width: 3.8rem; <-- Removido */
     height: auto;
+    display: flex; /* Adicionado para flexibilidade */
+    align-items: center; 
+    padding-right: 1.5rem; /* Adiciona espaçamento do logo */
 }
+
 .header__logo img {
-    width: 100%;
+    /* Ajuste para diminuir o logo e mantê-lo proporcional */
+    max-height: 3.5rem; 
+    width: auto;
     display: block;
     filter: drop-shadow(0 0 1px var(--color-accent));
 }
@@ -111,7 +117,7 @@ body {
     color: var(--text-dim);
     font-size: 1.1rem;
     font-weight: 500;
-    padding-left: 1.5rem;
+    /* padding-left: 1.5rem; <-- Removido, usando o padding-right do logo */
 }
 #filtro-nome {
     font-weight: 700;
@@ -341,7 +347,8 @@ body {
     margin-top: 0.5rem;
 }
 
-/* --- Explorador de Filtros --- */
+/* --- Explorador de Filtros (Estilos do menu retrátil) --- */
+
 .card--filters .card__header {
     display: flex;
     justify-content: space-between;
@@ -354,26 +361,78 @@ body {
     font-weight: 600;
 }
 
+/* Estilo do container DETAILS */
+.filter-menu-details {
+    margin-top: 1rem;
+    background-color: var(--header-bg); /* Fundo do menu/dropdown */
+    border-radius: 0.75rem;
+    border: 1px solid var(--border-color);
+}
+
+/* Estilo do SUMMARY (o botão que abre/fecha) */
+.filter-menu-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.2rem;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--color-accent); 
+    list-style: none; /* Remove a bolinha/triângulo padrão do summary no Firefox */
+    outline: none;
+    transition: background-color 0.2s;
+}
+
+/* Remove a seta padrão do Chrome/Edge/Safari (Webkit) */
+.filter-menu-summary::-webkit-details-marker {
+    display: none;
+}
+
+.filter-menu-summary i {
+    transition: transform 0.2s;
+    font-size: 0.9rem;
+    color: var(--color-accent);
+}
+
+/* Rotação da seta quando o menu está aberto */
+.filter-menu-details[open] .filter-menu-summary i {
+    transform: rotate(180deg);
+}
+
+/* Ajusta a lista de filtros para ficar dentro do details */
 .filter-list {
     list-style: none;
     padding: 0;
-    margin-top: 1rem;
+    margin-top: 0; 
+    border-top: 1px solid var(--border-color); /* Separador visual */
 }
 
 .filter-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--header-bg);
-    border-radius: 0.75rem;
-    padding: 0.8rem 1.2rem;
-    margin-bottom: 0.5rem;
+    background-color: var(--header-bg); /* Mantém o fundo, mas sem a margem externa */
+    border-radius: 0; 
+    padding: 0.7rem 1.2rem; /* Padding ajustado */
+    margin-bottom: 0; 
     cursor: pointer;
     transition: background-color 0.2s;
-    border: 1px solid transparent;
+    border-bottom: 1px solid var(--border-color);
 }
 .filter-item:hover {
     background-color: var(--border-color);
+}
+
+/* Arredonda o último item da lista */
+.filter-list li:last-child {
+    border-bottom: none;
+    border-bottom-left-radius: 0.75rem;
+    border-bottom-right-radius: 0.75rem;
+}
+
+/* Removendo a margem do filter-item anterior, pois agora o container é a UL */
+.filter-list li:not(:last-child) {
+    margin-bottom: 0;
 }
 
 .filter-item__name {
@@ -414,31 +473,30 @@ body {
     display: none; /* Esconde o botão se for o filtro atual */
 }
 
+/* --- Modal e Galeria (Sem alterações significativas de layout) --- */
+
 .modal::backdrop {
     background-color: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(8px); 
 }
 
-/* Estilo do Container Principal do Modal */
 .modal {
     border: 1px solid var(--border-color);
     border-radius: 1.5rem;
     padding: 2rem;
     width: 95vw;
-    max-width: 1200px; /* Largura máxima em desktop */
+    max-width: 1200px;
     max-height: 95vh;
-    overflow-y: auto; /* Permite scroll se o conteúdo for muito grande */
-    background-color: var(--card-bg); /* Fundo escuro do card/painel */
+    overflow-y: auto; 
+    background-color: var(--card-bg); 
     color: var(--text-main);
     box-shadow: 0 0 30px var(--shadow-color);
-    /* Centralização Fixa */
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
 
-/* Botão Fechar Modal (canto superior direito) */
 #btn-fechar-modal {
     position: absolute;
     top: 1.5rem;
@@ -459,7 +517,6 @@ body {
     border-color: var(--color-accent);
 }
 
-/* Título e Descrição do Modal */
 .modal__title {
     font-size: 2rem;
     font-weight: 700;
@@ -473,18 +530,15 @@ body {
     font-size: 1rem;
 }
 
-/* --- GALERIA GRID (Grade das Fotos) --- */
 .galeria-grid {
     display: grid;
-    /* Grid responsivo: 4 colunas em desktop, adaptando para telas menores */
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
     gap: 1.5rem;
     padding: 1rem;
-    background-color: var(--header-bg); /* Um fundo levemente mais escuro para o grid, como um container interno */
+    background-color: var(--header-bg); 
     border-radius: 1rem;
 }
 
-/* Container Individual da Foto */
 .img_galeria_content {
     background: var(--body-bg);
     border-radius: 0.6rem;
@@ -496,19 +550,17 @@ body {
 
 .img_galeria_content:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 20px var(--color-accent); /* Efeito de destaque azul no hover */
+    box-shadow: 0 8px 20px var(--color-accent);
 }
 
 .img_galeria_content img {
     width: 100%;
-    /* Mantém uma proporção visualmente agradável */
     aspect-ratio: 4 / 3; 
     object-fit: cover;
     display: block;
-    user-select: none; /* Evita seleção de imagem */
+    user-select: none;
 }
 
-/* Botões (Compartilhar, Baixar, Deletar) */
 .botoes {
     display: flex;
     justify-content: space-around;
@@ -540,5 +592,118 @@ body {
     border-color: var(--color-accent);
 }
 .botoes button:hover i {
-    color: var(--color-secondary); /* Ícone branco no hover azul */
+    color: var(--color-secondary);
+}
+
+/* ----------------------------------- */
+/* 10. MEDIA QUERIES (RESPONSIVIDADE) */
+/* ----------------------------------- */
+
+@media (max-width: 1024px) {
+    /* Ajuste o padding geral do conteúdo principal */
+    .main-content {
+        padding: calc(1rem + 4.5rem) 1rem 1rem 1rem; /* Reduz padding superior e lateral */
+        grid-template-columns: 1fr; /* Muda para uma única coluna */
+        gap: 1.5rem; /* Espaçamento entre as seções */
+        max-width: 100%;
+    }
+
+    /* 4. HEADER */
+    .header {
+        /* Reorganiza o header para mobile: Logo | Nav | Tema */
+        grid-template-areas: 
+            "logo nav tema"
+            "status status status";
+        grid-template-columns: auto 1fr auto; 
+        padding: 0.75rem 1rem; /* Reduz o padding do header */
+    }
+
+    .header__logo {
+        padding-right: 0.5rem;
+    }
+    
+    .header__logo img {
+        max-height: 2.5rem; /* Logo um pouco menor no mobile */
+    }
+
+    .header__status-desktop {
+        /* Move o status do filtro para a linha de baixo, ocupando a largura total */
+        grid-area: status;
+        padding: 0.5rem 0 0 0; 
+        justify-self: start;
+        font-size: 0.9rem;
+    }
+    
+    .header__nav {
+        /* Centraliza a navegação no espaço que sobrou no cabeçalho */
+        grid-area: nav;
+        justify-content: flex-end; 
+        gap: 1rem;
+    }
+    .header__nav-item {
+        font-size: 0.9rem;
+    }
+    
+    /* Move o botão de tema que estava em controls--desktop */
+    .controls--desktop #btn-modo-claro {
+        grid-area: tema;
+        order: 3;
+        /* Estilos para o botão tema quando está no header */
+        width: 2.5rem;
+        height: 2.5rem;
+        font-size: 1.1rem;
+        margin: 0;
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color); 
+        box-shadow: none;
+    }
+    .controls--desktop #btn-modo-claro:hover {
+        transform: none;
+    }
+    
+    /* Reorganiza os botões de controle principal */
+    .controls--desktop {
+        margin-top: 0;
+        justify-content: space-around;
+        gap: 0.5rem;
+    }
+    
+    /* Reduz o tamanho da webcam e o padding do container */
+    .webcam-container {
+        height: 60vh;
+        padding: 1rem;
+    }
+
+    /* Reduz o tamanho dos botões de ação */
+    .button-action {
+        width: 3rem;
+        height: 3rem;
+        font-size: 1.2rem;
+    }
+
+    /* Galeria Modal */
+    .modal {
+        width: 100vw;
+        max-width: 100%;
+        margin: 0;
+        padding: 1rem;
+        top: 0;
+        left: 0;
+        transform: none; /* Remove a centralização de desktop */
+        height: 100vh;
+        max-height: 100vh;
+        border-radius: 0;
+    }
+    #btn-fechar-modal {
+        top: 1rem;
+        right: 1rem;
+        padding: 0.3rem 0.6rem;
+        font-size: 0.8rem;
+    }
+
+    /* Reduz o grid da galeria para menos colunas em mobile */
+    .galeria-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 0.75rem;
+    }
 }
