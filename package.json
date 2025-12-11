@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "npx http-server -p 3000 -c-1",
-    "build": "tsc",
+    "build": "tsc && echo 'Build completed'",
     "start": "npx http-server -p 8080"
   },
   "author": "Anathyon",
