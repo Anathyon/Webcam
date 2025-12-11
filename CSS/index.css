@@ -1,709 +1,623 @@
-@import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css');
-
-/* ----------------------------------- */
-/* RESET */
-/* ----------------------------------- */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* ----------------------------------- */
-/* 1. VARIÁVEIS DE TEMA (Padrão: ESCURO) */
-/* ----------------------------------- */
-:root {
-    /* Cores Globais */
-    --color-primary: #0a0a0d; /* Fundo principal escuro */
-    --color-secondary: #ffffff; /* Texto claro */
-    --color-accent: #3498db; /* Azul de destaque/ativação */
-    --color-hover: #5d5dff; /* Cor de hover para botões */
-
-    /* Tema Escuro (Padrão) */
-    --body-bg: var(--color-primary);
-    --card-bg: #1c2130; /* Fundo dos cards/modals escuro */
-    --text-main: #e0e0e0;
-    --text-dim: #99a9b5; /* Texto secundário/descrições */
-    --header-bg: #0d121c; 
-    --border-color: #2c3346;
-    --shadow-color: rgba(0, 0, 0, 0.4);
-
-    /* Tipografia */
-    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-/* ----------------------------------- */
-/* 2. SOBRESCRITA PARA TEMA CLARO */
-/* ----------------------------------- */
-body.theme--light {
-    --color-primary: #f0f0f0; 
-    --color-secondary: #1a1a1a;
-    --color-accent: #176B87;
-    --color-hover: #83C5BE;
-
-    --body-bg: #ffffff;
-    --card-bg: #e8e8e8;
-    --text-main: #333333;
-    --text-dim: #666666;
-    --header-bg: #f8f8f8; 
-    --border-color: #cccccc;
-    --shadow-color: rgba(0, 0, 0, 0.1);
-}
-
-/* ----------------------------------- */
-/* 3. ESTILOS GERAIS */
-/* ----------------------------------- */
-body {
-    background-color: var(--body-bg);
-    color: var(--text-main);
-    font-family: var(--font-family);
-    min-height: 100vh;
-    padding: 0;
-    overflow-x: hidden; 
-}
-
-/* Estilo do Card/Container Base (Webcam, Sidebars) */
-.card, .webcam-container {
-    background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 1.5rem;
-    box-shadow: 0 8px 15px var(--shadow-color);
-    padding: 2rem;
-    position: relative;
-}
-
-/* ----------------------------------- */
-/* 4. HEADER */
-/* ----------------------------------- */
-.header {
-    background-color: var(--header-bg);
-    display: grid;
-    /* Logo | Status | Nav */
-    grid-template-areas: 
-        "logo status nav"
-        "mobile mobile mobile";
-    grid-template-columns: auto 1fr auto; 
-    align-items: center;
-    padding: 1rem 3rem;
-    border-radius: 0 0 1rem 1rem;
-    box-shadow: 0 4px 10px var(--shadow-color);
-    position: fixed; /* Fixa o header no topo */
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-}
-
-.header__logo {
-    grid-area: logo;
-    /* width: 3.8rem; <-- Removido */
-    height: auto;
-    display: flex; /* Adicionado para flexibilidade */
-    align-items: center; 
-    padding-right: 1.5rem; /* Adiciona espaçamento do logo */
-}
-
-.header__logo img {
-    /* Ajuste para diminuir o logo e mantê-lo proporcional */
-    max-height: 3.5rem; 
-    width: auto;
-    display: block;
-    filter: drop-shadow(0 0 1px var(--color-accent));
-}
-
-.header__status-desktop {
-    grid-area: status;
-    justify-self: start;
-    color: var(--text-dim);
-    font-size: 1.1rem;
-    font-weight: 500;
-    /* padding-left: 1.5rem; <-- Removido, usando o padding-right do logo */
-}
-#filtro-nome {
-    font-weight: 700;
-    color: var(--color-accent);
-}
-
-.header__nav {
-    grid-area: nav;
-    display: flex;
-    list-style: none;
-    gap: 2rem;
-    margin: 0;
-    padding: 0;
-}
-
-.header__nav-item {
-    color: var(--text-main);
-    font-weight: 600;
-    cursor: pointer;
-    transition: color 0.2s, text-shadow 0.2s;
-    font-size: 1.1rem;
-}
-
-.header__nav-item:hover {
-    color: var(--color-accent);
-    text-shadow: 0 0 5px var(--color-accent);
-}
-
-/* ----------------------------------- */
-/* 5. MAIN CONTENT (LAYOUT GRID PRINCIPAL) */
-/* ----------------------------------- */
-.main-content {
-    display: grid;
-    /* Adicione padding no topo para o conteúdo não ficar por baixo do header fixo */
-    padding: calc(1rem + 6rem) 2rem 2rem 2rem; 
-    
-    /* Layout para desktop: 2/3 para webcam e 1/3 para sidebars */
-    grid-template-columns: 2fr 1fr;
-    gap: 2rem;
-    max-width: 1400px;
-    margin: 0 auto;
-}
-
-/* ----------------------------------- */
-/* 6. WEBCAM AREA (CAIXA PRINCIPAL DA CÂMERA) */
-/* ----------------------------------- */
-.webcam-area {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
+/* ===================================================
+   WEBCAM CREATIVE - CSS OTIMIZADO
+   ================================================== */
+
+/* Reset e Base */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+/* Variáveis CSS Otimizadas */
+:root{
+    --primary:#0a0a0d;
+    --secondary:#ffffff;
+    --accent:#3498db;
+    --hover:#5d5dff;
+    --body-bg:var(--primary);
+    --card-bg:#1c2130;
+    --text-main:#e0e0e0;
+    --text-dim:#99a9b5;
+    --header-bg:#0d121c;
+    --border:#2c3346;
+    --shadow:rgba(0,0,0,0.4);
+    --font:'Segoe UI',system-ui,sans-serif;
+    --radius:1rem;
+    --transition:all 0.2s ease;
+}
+
+/* Tema Claro */
+body.theme--light{
+    --primary:#f0f0f0;
+    --secondary:#1a1a1a;
+    --accent:#176B87;
+    --hover:#83C5BE;
+    --body-bg:#ffffff;
+    --card-bg:#e8e8e8;
+    --text-main:#333333;
+    --text-dim:#666666;
+    --header-bg:#f8f8f8;
+    --border:#cccccc;
+    --shadow:rgba(0,0,0,0.1);
+}
+
+/* Base */
+body{
+    background:var(--body-bg);
+    color:var(--text-main);
+    font-family:var(--font);
+    min-height:100vh;
+    overflow-x:hidden;
+}
+
+/* Componentes Base */
+.card,.webcam-container{
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    box-shadow:0 8px 15px var(--shadow);
+    padding:2rem;
+    position:relative;
+}
+
+/* Header Fixo */
+.header{
+    background:var(--header-bg);
+    display:grid;
+    grid-template-areas:"logo status nav";
+    grid-template-columns:auto 1fr auto;
+    align-items:center;
+    padding:1rem 3rem;
+    border-radius:0 0 var(--radius) var(--radius);
+    box-shadow:0 4px 10px var(--shadow);
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    z-index:1000;
+}
+
+.header__logo{
+    grid-area:logo;
+    display:flex;
+    align-items:center;
+    padding-right:1.5rem;
+}
+
+.header__logo img{
+    max-height:3.5rem;
+    width:auto;
+    filter:drop-shadow(0 0 1px var(--accent));
+}
+
+.header__status-desktop{
+    grid-area:status;
+    color:var(--text-dim);
+    font-size:1.1rem;
+    font-weight:500;
+}
+
+#filtro-nome{
+    font-weight:700;
+    color:var(--accent);
+}
+
+.header__nav{
+    grid-area:nav;
+    display:flex;
+    list-style:none;
+    gap:2rem;
+}
+
+.header__nav-item{
+    color:var(--text-main);
+    font-weight:600;
+    cursor:pointer;
+    transition:var(--transition);
+    font-size:1.1rem;
+}
+
+.header__nav-item:hover{
+    color:var(--accent);
+    text-shadow:0 0 5px var(--accent);
+}
+
+/* Layout Principal */
+.main-content{
+    display:grid;
+    padding:calc(1rem + 6rem) 2rem 2rem 2rem;
+    grid-template-columns:2fr 1fr;
+    gap:2rem;
+    max-width:1400px;
+    margin:0 auto;
+}
+
+/* Webcam Area */
+.webcam-area{
+    display:flex;
+    flex-direction:column;
+    gap:1.5rem;
+}
+
+.webcam-container{
+    padding:1.5rem;
+    height:70vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+}
+
+.webcam-container__media{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:var(--radius);
+}
+
+.webcam-overlay{
+    position:absolute;
+    text-align:center;
+}
 
-.webcam-container {
-    padding: 1.5rem;
-    height: 70vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
+.webcam-overlay__message{
+    font-size:1.2rem;
+    max-width:300px;
+    color:var(--text-dim);
+    margin-bottom:2rem;
 }
 
-.webcam-container__media {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 1rem;
+.webcam-overlay__status-box{
+    display:flex;
+    gap:2rem;
+    justify-content:center;
 }
 
-.webcam-overlay {
-    position: absolute;
-    text-align: center;
+.webcam-overlay__status,.webcam-overlay__filter{
+    color:var(--accent);
+    padding:0.5rem 1.5rem;
+    border:1px solid var(--accent);
+    border-radius:0.5rem;
+    font-weight:bold;
+    font-size:0.9rem;
 }
 
-.webcam-overlay__message {
-    font-size: 1.2rem;
-    max-width: 300px;
-    color: var(--text-dim);
-    margin-bottom: 2rem;
+/* Controles */
+.controls--desktop{
+    display:flex;
+    justify-content:center;
+    gap:1.5rem;
+    margin-top:1rem;
 }
 
-.webcam-overlay__status-box {
-    display: flex;
-    gap: 2rem;
-    justify-content: center;
+.button-action{
+    width:3.5rem;
+    height:3.5rem;
+    border-radius:50%;
+    background:var(--card-bg);
+    border:2px solid var(--border);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:1.5rem;
+    cursor:pointer;
+    transition:var(--transition);
+    box-shadow:0 4px 8px var(--shadow);
 }
 
-.webcam-overlay__status, .webcam-overlay__filter {
-    color: var(--color-accent);
-    padding: 0.5rem 1.5rem;
-    border: 1px solid var(--color-accent);
-    border-radius: 0.5rem;
-    font-weight: bold;
-    font-size: 0.9rem;
+.button-action .bi{
+    color:var(--text-main);
+    transition:var(--transition);
 }
 
-/* ----------------------------------- */
-/* 7. CONTROLES DE AÇÃO (BOTÕES) */
-/* ----------------------------------- */
-.controls--desktop {
-    display: flex;
-    justify-content: center;
-    gap: 1.5rem;
-    margin-top: 1rem;
+.button-action:hover{
+    transform:translateY(-3px);
+    background:var(--hover);
+    border-color:var(--hover);
+    box-shadow:0 6px 10px var(--shadow);
 }
 
-.button-action {
-    width: 3.5rem;
-    height: 3.5rem;
-    border-radius: 50%;
-    background-color: var(--card-bg);
-    border: 2px solid var(--border-color); 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.5rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 8px var(--shadow-color);
-}
-
-.button-action .bi {
-    color: var(--text-main);
-    transition: color 0.3s;
-}
-
-.button-action:hover {
-    transform: translateY(-3px);
-    background-color: var(--color-hover);
-    border-color: var(--color-hover);
-    box-shadow: 0 6px 10px var(--shadow-color);
-}
+.button-action:hover .bi{
+    color:var(--secondary);
+}
+
+/* Sidebar */
+.side-panel{
+    display:flex;
+    flex-direction:column;
+    gap:2rem;
+}
 
-.button-action:hover .bi {
-    color: var(--color-secondary); /* Ícone branco no hover */
-}
-
-/* ----------------------------------- */
-/* 8. SIDEBARS (Painéis) */
-/* ----------------------------------- */
-.side-panel {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
+.card__title{
+    font-size:1.5rem;
+    font-weight:600;
+    margin-bottom:0.5rem;
 }
 
-.card__title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-}
+.card__description{
+    color:var(--text-dim);
+    font-size:0.9rem;
+    margin-bottom:1.5rem;
+}
 
-.card__description {
-    color: var(--text-dim);
-    font-size: 0.9rem;
-    margin-bottom: 1.5rem;
+/* Status Grid */
+.status-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:1rem;
 }
 
-/* --- Painel Rápido --- */
-.status-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-}
-
-.status-box {
-    background-color: var(--header-bg);
-    padding: 1rem;
-    border-radius: 0.8rem;
-    border: 1px solid var(--border-color);
-}
+.status-box{
+    background:var(--header-bg);
+    padding:1rem;
+    border-radius:0.8rem;
+    border:1px solid var(--border);
+}
 
-.status-box__label {
-    font-size: 0.8rem;
-    color: var(--text-dim);
-    margin-bottom: 0.2rem;
+.status-box__label{
+    font-size:0.8rem;
+    color:var(--text-dim);
+    margin-bottom:0.2rem;
 }
 
-.status-box__value {
-    font-size: 2rem;
-    font-weight: bold;
-    color: var(--color-accent);
+.status-box__value{
+    font-size:2rem;
+    font-weight:bold;
+    color:var(--accent);
 }
 
-/* --- Prévia da Galeria --- */
-.card--preview .card__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.5rem;
+/* Preview */
+.card--preview .card__header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:0.5rem;
 }
 
-.btn--small {
-    background-color: var(--color-accent);
-    color: var(--color-secondary);
-    border: none;
-    padding: 0.4rem 1rem;
-    border-radius: 0.5rem;
-    font-size: 0.8rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-.btn--small:hover {
-    background-color: var(--color-hover);
+.btn--small{
+    background:var(--accent);
+    color:var(--secondary);
+    border:none;
+    padding:0.4rem 1rem;
+    border-radius:0.5rem;
+    font-size:0.8rem;
+    font-weight:bold;
+    cursor:pointer;
+    transition:var(--transition);
 }
 
-.gallery-preview {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--header-bg);
-    border: 2px dashed var(--border-color);
-    border-radius: 1rem;
-    padding: 2rem 1rem;
-    text-align: center;
-    min-height: 150px;
+.btn--small:hover{
+    background:var(--hover);
 }
-.gallery-preview i {
-    font-size: 3rem;
-    color: var(--text-dim);
-    margin-bottom: 0.5rem;
+
+.gallery-preview{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    background:var(--header-bg);
+    border:2px dashed var(--border);
+    border-radius:var(--radius);
+    padding:2rem 1rem;
+    text-align:center;
+    min-height:150px;
 }
-.gallery-preview__hint {
-    font-size: 0.8rem;
-    color: var(--text-dim);
-    margin-top: 0.5rem;
+
+.gallery-preview i{
+    font-size:3rem;
+    color:var(--text-dim);
+    margin-bottom:0.5rem;
 }
 
-/* --- Explorador de Filtros (Estilos do menu retrátil) --- */
+.gallery-preview__hint{
+    font-size:0.8rem;
+    color:var(--text-dim);
+    margin-top:0.5rem;
+}
 
-.card--filters .card__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.5rem;
+/* Filtros */
+.card--filters .card__header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:0.5rem;
 }
 
-.card__count {
-    color: var(--text-dim);
-    font-weight: 600;
+.card__count{
+    color:var(--text-dim);
+    font-weight:600;
 }
 
-/* Estilo do container DETAILS */
-.filter-menu-details {
-    margin-top: 1rem;
-    background-color: var(--header-bg); /* Fundo do menu/dropdown */
-    border-radius: 0.75rem;
-    border: 1px solid var(--border-color);
+.filter-menu-details{
+    margin-top:1rem;
+    background:var(--header-bg);
+    border-radius:0.75rem;
+    border:1px solid var(--border);
 }
 
-/* Estilo do SUMMARY (o botão que abre/fecha) */
-.filter-menu-summary {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 1.2rem;
-    cursor: pointer;
-    font-weight: 600;
-    color: var(--color-accent); 
-    list-style: none; /* Remove a bolinha/triângulo padrão do summary no Firefox */
-    outline: none;
-    transition: background-color 0.2s;
+.filter-menu-summary{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:1rem 1.2rem;
+    cursor:pointer;
+    font-weight:600;
+    color:var(--accent);
+    list-style:none;
+    outline:none;
+    transition:var(--transition);
 }
 
-/* Remove a seta padrão do Chrome/Edge/Safari (Webkit) */
-.filter-menu-summary::-webkit-details-marker {
-    display: none;
+.filter-menu-summary::-webkit-details-marker{
+    display:none;
 }
 
-.filter-menu-summary i {
-    transition: transform 0.2s;
-    font-size: 0.9rem;
-    color: var(--color-accent);
+.filter-menu-summary i{
+    transition:transform 0.2s;
+    font-size:0.9rem;
+    color:var(--accent);
 }
 
-/* Rotação da seta quando o menu está aberto */
-.filter-menu-details[open] .filter-menu-summary i {
-    transform: rotate(180deg);
+.filter-menu-details[open] .filter-menu-summary i{
+    transform:rotate(180deg);
 }
 
-/* Ajusta a lista de filtros para ficar dentro do details */
-.filter-list {
-    list-style: none;
-    padding: 0;
-    margin-top: 0; 
-    border-top: 1px solid var(--border-color); /* Separador visual */
-}
-
-.filter-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--header-bg); /* Mantém o fundo, mas sem a margem externa */
-    border-radius: 0; 
-    padding: 0.7rem 1.2rem; /* Padding ajustado */
-    margin-bottom: 0; 
-    cursor: pointer;
-    transition: background-color 0.2s;
-    border-bottom: 1px solid var(--border-color);
+.filter-list{
+    list-style:none;
+    padding:0;
+    margin-top:0;
+    border-top:1px solid var(--border);
 }
-.filter-item:hover {
-    background-color: var(--border-color);
-}
-
-/* Arredonda o último item da lista */
-.filter-list li:last-child {
-    border-bottom: none;
-    border-bottom-left-radius: 0.75rem;
-    border-bottom-right-radius: 0.75rem;
-}
 
-/* Removendo a margem do filter-item anterior, pois agora o container é a UL */
-.filter-list li:not(:last-child) {
-    margin-bottom: 0;
+.filter-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:var(--header-bg);
+    padding:0.7rem 1.2rem;
+    cursor:pointer;
+    transition:var(--transition);
+    border-bottom:1px solid var(--border);
 }
 
-.filter-item__name {
-    font-weight: 500;
-    color: var(--text-main);
+.filter-item:hover{
+    background:var(--border);
 }
 
-.btn--apply {
-    background: none;
-    color: var(--text-dim);
-    border: 1px solid var(--text-dim);
-    padding: 0.3rem 0.8rem;
-    border-radius: 0.4rem;
-    font-size: 0.75rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.2s;
+.filter-list li:last-child{
+    border-bottom:none;
+    border-bottom-left-radius:0.75rem;
+    border-bottom-right-radius:0.75rem;
 }
-.btn--apply:hover {
-    color: var(--color-accent);
-    border-color: var(--color-accent);
+
+.filter-item__name{
+    font-weight:500;
+    color:var(--text-main);
 }
 
-/* Estilo para o item ATUAL (como na imagem) */
-.filter-item--active {
-    background-color: var(--color-accent);
-    border-color: var(--color-accent);
+.btn--apply{
+    background:none;
+    color:var(--text-dim);
+    border:1px solid var(--text-dim);
+    padding:0.3rem 0.8rem;
+    border-radius:0.4rem;
+    font-size:0.75rem;
+    font-weight:bold;
+    cursor:pointer;
+    transition:var(--transition);
 }
-.filter-item--active .filter-item__name {
-    color: var(--color-secondary);
+
+.btn--apply:hover{
+    color:var(--accent);
+    border-color:var(--accent);
 }
-.filter-item--active .filter-item__status {
-    color: var(--color-secondary);
-    font-weight: bold;
-    font-size: 0.9rem;
+
+.filter-item--active{
+    background:var(--accent);
+    border-color:var(--accent);
 }
-.filter-item--active .btn--apply {
-    display: none; /* Esconde o botão se for o filtro atual */
+
+.filter-item--active .filter-item__name{
+    color:var(--secondary);
 }
 
-/* --- Modal e Galeria (Sem alterações significativas de layout) --- */
+.filter-item--active .filter-item__status{
+    color:var(--secondary);
+    font-weight:bold;
+    font-size:0.9rem;
+}
 
-.modal::backdrop {
-    background-color: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(8px); 
-}
-
-.modal {
-    border: 1px solid var(--border-color);
-    border-radius: 1.5rem;
-    padding: 2rem;
-    width: 95vw;
-    max-width: 1200px;
-    max-height: 95vh;
-    overflow-y: auto; 
-    background-color: var(--card-bg); 
-    color: var(--text-main);
-    box-shadow: 0 0 30px var(--shadow-color);
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+/* Modal */
+.modal::backdrop{
+    background:rgba(0,0,0,0.8);
+    backdrop-filter:blur(8px);
 }
 
-#btn-fechar-modal {
-    position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
-    font-size: 1rem;
-    color: var(--text-main);
-    background: var(--header-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 0.5rem;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    transition: all 0.2s;
+.modal{
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:2rem;
+    width:95vw;
+    max-width:1200px;
+    max-height:95vh;
+    overflow-y:auto;
+    background:var(--card-bg);
+    color:var(--text-main);
+    box-shadow:0 0 30px var(--shadow);
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
 }
 
-#btn-fechar-modal:hover {
-    background-color: var(--color-accent);
-    color: var(--color-secondary);
-    border-color: var(--color-accent);
+#btn-fechar-modal{
+    position:absolute;
+    top:1.5rem;
+    right:1.5rem;
+    font-size:1rem;
+    color:var(--text-main);
+    background:var(--header-bg);
+    border:1px solid var(--border);
+    border-radius:0.5rem;
+    padding:0.5rem 1rem;
+    cursor:pointer;
+    transition:var(--transition);
 }
 
-.modal__title {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-    color: var(--text-main);
+#btn-fechar-modal:hover{
+    background:var(--accent);
+    color:var(--secondary);
+    border-color:var(--accent);
 }
 
-.modal__description {
-    color: var(--text-dim);
-    margin-bottom: 2rem;
-    font-size: 1rem;
+.modal__title{
+    font-size:2rem;
+    font-weight:700;
+    margin-bottom:0.5rem;
+    color:var(--text-main);
 }
 
-.galeria-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
-    gap: 1.5rem;
-    padding: 1rem;
-    background-color: var(--header-bg); 
-    border-radius: 1rem;
+.modal__description{
+    color:var(--text-dim);
+    margin-bottom:2rem;
+    font-size:1rem;
 }
 
-.img_galeria_content {
-    background: var(--body-bg);
-    border-radius: 0.6rem;
-    overflow: hidden;
-    box-shadow: 0 4px 14px var(--shadow-color);
-    transition: transform 0.3s;
-    border: 1px solid var(--border-color);
+.galeria-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:1.5rem;
+    padding:1rem;
+    background:var(--header-bg);
+    border-radius:var(--radius);
 }
 
-.img_galeria_content:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px var(--color-accent);
+.img_galeria_content{
+    background:var(--body-bg);
+    border-radius:0.6rem;
+    overflow:hidden;
+    box-shadow:0 4px 14px var(--shadow);
+    transition:transform 0.3s;
+    border:1px solid var(--border);
 }
 
-.img_galeria_content img {
-    width: 100%;
-    aspect-ratio: 4 / 3; 
-    object-fit: cover;
-    display: block;
-    user-select: none;
+.img_galeria_content:hover{
+    transform:translateY(-5px);
+    box-shadow:0 8px 20px var(--accent);
 }
 
-.botoes {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    background: var(--header-bg);
-    padding: 0.6rem;
+.img_galeria_content img{
+    width:100%;
+    aspect-ratio:4/3;
+    object-fit:cover;
+    display:block;
+    user-select:none;
 }
 
-.botoes button {
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-    font-size: 1.1rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
+.botoes{
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    background:var(--header-bg);
+    padding:0.6rem;
 }
 
-.botoes button i {
-    color: var(--text-dim); 
-    transition: color 0.2s;
+.botoes button{
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    padding:0.5rem;
+    border-radius:0.5rem;
+    font-size:1.1rem;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:var(--transition);
 }
 
-.botoes button:hover {
-    background: var(--color-accent);
-    border-color: var(--color-accent);
+.botoes button i{
+    color:var(--text-dim);
+    transition:var(--transition);
 }
-.botoes button:hover i {
-    color: var(--color-secondary);
+
+.botoes button:hover{
+    background:var(--accent);
+    border-color:var(--accent);
 }
 
-/* ----------------------------------- */
-/* 10. MEDIA QUERIES (RESPONSIVIDADE) */
-/* ----------------------------------- */
+.botoes button:hover i{
+    color:var(--secondary);
+}
 
-@media (max-width: 1024px) {
-    /* Ajuste o padding geral do conteúdo principal */
-    .main-content {
-        padding: calc(1rem + 4.5rem) 1rem 1rem 1rem; /* Reduz padding superior e lateral */
-        grid-template-columns: 1fr; /* Muda para uma única coluna */
-        gap: 1.5rem; /* Espaçamento entre as seções */
-        max-width: 100%;
+/* Responsivo */
+@media (max-width:1024px){
+    .main-content{
+        padding:calc(1rem + 4.5rem) 1rem 1rem 1rem;
+        grid-template-columns:1fr;
+        gap:1.5rem;
+        max-width:100%;
     }
 
-    /* 4. HEADER */
-    .header {
-        /* Reorganiza o header para mobile: Logo | Nav | Tema */
-        grid-template-areas: 
-            "logo nav tema"
-            "status status status";
-        grid-template-columns: auto 1fr auto; 
-        padding: 0.75rem 1rem; /* Reduz o padding do header */
+    .header{
+        grid-template-areas:"logo nav tema" "status status status";
+        grid-template-columns:auto 1fr auto;
+        padding:0.75rem 1rem;
     }
 
-    .header__logo {
-        padding-right: 0.5rem;
-    }
-    
-    .header__logo img {
-        max-height: 2.5rem; /* Logo um pouco menor no mobile */
+    .header__logo{
+        padding-right:0.5rem;
     }
 
-    .header__status-desktop {
-        /* Move o status do filtro para a linha de baixo, ocupando a largura total */
-        grid-area: status;
-        padding: 0.5rem 0 0 0; 
-        justify-self: start;
-        font-size: 0.9rem;
-    }
-    
-    .header__nav {
-        /* Centraliza a navegação no espaço que sobrou no cabeçalho */
-        grid-area: nav;
-        justify-content: flex-end; 
-        gap: 1rem;
-    }
-    .header__nav-item {
-        font-size: 0.9rem;
-    }
-    
-    /* Move o botão de tema que estava em controls--desktop */
-    .controls--desktop #btn-modo-claro {
-        grid-area: tema;
-        order: 3;
-        /* Estilos para o botão tema quando está no header */
-        width: 2.5rem;
-        height: 2.5rem;
-        font-size: 1.1rem;
-        margin: 0;
-        background-color: var(--card-bg);
-        border: 1px solid var(--border-color); 
-        box-shadow: none;
-    }
-    .controls--desktop #btn-modo-claro:hover {
-        transform: none;
-    }
-    
-    /* Reorganiza os botões de controle principal */
-    .controls--desktop {
-        margin-top: 0;
-        justify-content: space-around;
-        gap: 0.5rem;
-    }
-    
-    /* Reduz o tamanho da webcam e o padding do container */
-    .webcam-container {
-        height: 60vh;
-        padding: 1rem;
+    .header__logo img{
+        max-height:2.5rem;
     }
 
-    /* Reduz o tamanho dos botões de ação */
-    .button-action {
-        width: 3rem;
-        height: 3rem;
-        font-size: 1.2rem;
+    .header__status-desktop{
+        grid-area:status;
+        padding:0.5rem 0 0 0;
+        font-size:0.9rem;
     }
 
-    /* Galeria Modal */
-    .modal {
-        width: 100vw;
-        max-width: 100%;
-        margin: 0;
-        padding: 1rem;
-        top: 0;
-        left: 0;
-        transform: none; /* Remove a centralização de desktop */
-        height: 100vh;
-        max-height: 100vh;
-        border-radius: 0;
-    }
-    #btn-fechar-modal {
-        top: 1rem;
-        right: 1rem;
-        padding: 0.3rem 0.6rem;
-        font-size: 0.8rem;
+    .header__nav{
+        grid-area:nav;
+        justify-content:flex-end;
+        gap:1rem;
     }
 
-    /* Reduz o grid da galeria para menos colunas em mobile */
-    .galeria-grid {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 0.75rem;
+    .header__nav-item{
+        font-size:0.9rem;
+    }
+
+    .webcam-container{
+        height:60vh;
+        padding:1rem;
+    }
+
+    .button-action{
+        width:3rem;
+        height:3rem;
+        font-size:1.2rem;
+    }
+
+    .modal{
+        width:100vw;
+        max-width:100%;
+        margin:0;
+        padding:1rem;
+        top:0;
+        left:0;
+        transform:none;
+        height:100vh;
+        max-height:100vh;
+        border-radius:0;
+    }
+
+    #btn-fechar-modal{
+        top:1rem;
+        right:1rem;
+        padding:0.3rem 0.6rem;
+        font-size:0.8rem;
+    }
+
+    .galeria-grid{
+        grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+        gap:0.75rem;
     }
 }

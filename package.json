@@ -1,15 +1,17 @@
 {
-  "name": "webcam",
+  "name": "@anathyon/webcam",
   "version": "2.0.0",
   "description": "Projeto-Webcam",
   "main": "index.js",
   "scripts": {
-    "dev": "live-server",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "npx http-server -p 3000 -c-1",
+    "build": "tsc",
+    "start": "npx http-server -p 8080"
   },
   "author": "Anathyon",
   "license": "ISC",
   "devDependencies": {
-    "live-server": "^1.2.0"
+    "http-server": "^14.1.1",
+    "typescript": "^5.3.3"
   }
 }
