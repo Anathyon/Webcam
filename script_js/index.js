@@ -1,5 +1,7 @@
 // Webcam Creative - Código Seguro e Otimizado
 'use strict';
+// Importar animações simples
+import { initializeAnimations, animateCaptureButton, animateCaptureSuccess, animateFilterChange, animateGalleryImages, animateThemeChange, animateCameraSwitch, animateFilterList, animateGalleryPreview } from './animations-simple.js';
 // Elementos DOM com verificação de existência
 const getElement = (selector) => document.querySelector(selector);
 const video = getElement('#webcam-video');
@@ -105,6 +107,7 @@ const aplicarFiltro = (index, updateGlobalIndex = true) => {
     const filtro = filtros[index];
     if (updateGlobalIndex) {
         filtroAtualIndex = index;
+        animateFilterChange();
     }
     if (video) {
         video.style.filter = filtro.valor;
@@ -181,6 +184,7 @@ const salvarFoto = (dataUrl) => {
         fotos.push(novaFoto);
         localStorage.setItem('fotos', JSON.stringify(fotos));
         renderizarPreview();
+        animateGalleryPreview();
         showSecureNotification('Foto capturada com sucesso!');
     }
     catch (error) {
@@ -215,6 +219,8 @@ const renderizarGaleria = () => {
     });
     galeriaGrid.innerHTML = '';
     galeriaGrid.appendChild(fragment);
+    // Animar imagens após renderização
+    setTimeout(() => animateGalleryImages(), 100);
 };
 // Funções utilitárias seguras
 const createEmptyGalleryHTML = () => `
@@ -344,11 +350,15 @@ const renderizarListaFiltros = () => {
     });
     filterListUl.innerHTML = '';
     filterListUl.appendChild(fragment);
+    // Animar lista após renderização
+    setTimeout(() => animateFilterList(), 50);
 };
 // Event listeners seguros
 const setupSecureEventListeners = () => {
     btnCapturar?.addEventListener('click', (e) => {
         e.preventDefault();
+        // Animar botão de captura
+        animateCaptureButton();
         if (!streamAtual) {
             showSecureNotification('Câmera não ativa.', 'error');
             return;
@@ -365,6 +375,8 @@ const setupSecureEventListeners = () => {
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
             const dataUrl = canvas.toDataURL('image/png', 0.9);
             salvarFoto(dataUrl);
+            // Animar feedback de sucesso
+            animateCaptureSuccess();
         }
         catch (error) {
             console.error('Erro na captura:', error);
@@ -373,11 +385,13 @@ const setupSecureEventListeners = () => {
     });
     btnAlternar?.addEventListener('click', (e) => {
         e.preventDefault();
+        animateCameraSwitch();
         usandoCamFront = !usandoCamFront;
         iniciarCamera(usandoCamFront);
     });
     btnTema?.addEventListener('click', (e) => {
         e.preventDefault();
+        animateThemeChange();
         const body = document.body;
         const isDark = body.classList.contains('theme--dark');
         body.classList.toggle('theme--dark', !isDark);
@@ -391,26 +405,24 @@ const setupSecureEventListeners = () => {
                 : '/CSS/img/logo-dark.png';
         }
     });
+    // Modal é gerenciado pelas animações
     [btnAbrirGaleriaDesktop, btnAbrirGaleriaPreview].forEach(btn => {
         btn?.addEventListener('click', (e) => {
             e.preventDefault();
-            galleryModal?.showModal();
             renderizarGaleria();
         });
-    });
-    btnFecharModal?.addEventListener('click', (e) => {
-        e.preventDefault();
-        galleryModal?.close();
     });
 };
 // Inicialização segura
 document.addEventListener('DOMContentLoaded', () => {
     try {
+        // Inicializar animações primeiro
+        initializeAnimations();
         iniciarCamera(usandoCamFront);
         renderizarListaFiltros();
         renderizarPreview();
         setupSecureEventListeners();
-        console.log('Webcam Creative inicializado com segurança');
+        console.log('Webcam Creative inicializado com segurança e animações');
     }
     catch (error) {
         console.error('Erro na inicialização:', error);

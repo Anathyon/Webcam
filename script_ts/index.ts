@@ -1,6 +1,20 @@
 // Webcam Creative - Código Seguro e Otimizado
 'use strict';
 
+// Importar animações simples
+import {
+    initializeAnimations,
+    animateCaptureButton,
+    animateCaptureSuccess,
+    animateFilterChange,
+    animateGalleryOpen,
+    animateGalleryImages,
+    animateThemeChange,
+    animateCameraSwitch,
+    animateFilterList,
+    animateGalleryPreview
+} from './animations-simple.js';
+
 // Elementos DOM com verificação de existência
 const getElement = <T extends HTMLElement>(selector: string): T | null => 
     document.querySelector<T>(selector);
@@ -133,6 +147,7 @@ const aplicarFiltro = (index: number, updateGlobalIndex = true): void => {
     
     if (updateGlobalIndex) {
         filtroAtualIndex = index;
+        animateFilterChange();
     }
     
     if (video) {
@@ -220,6 +235,7 @@ const salvarFoto = (dataUrl: string): void => {
         fotos.push(novaFoto);
         localStorage.setItem('fotos', JSON.stringify(fotos));
         renderizarPreview();
+        animateGalleryPreview();
         showSecureNotification('Foto capturada com sucesso!');
     } catch (error) {
         console.error('Erro ao salvar foto:', error);
@@ -261,6 +277,9 @@ const renderizarGaleria = (): void => {
     
     galeriaGrid.innerHTML = '';
     galeriaGrid.appendChild(fragment);
+    
+    // Animar imagens após renderização
+    setTimeout(() => animateGalleryImages(), 100);
 };
 
 // Funções utilitárias seguras
@@ -406,12 +425,18 @@ const renderizarListaFiltros = (): void => {
     
     filterListUl.innerHTML = '';
     filterListUl.appendChild(fragment);
+    
+    // Animar lista após renderização
+    setTimeout(() => animateFilterList(), 50);
 };
 
 // Event listeners seguros
 const setupSecureEventListeners = (): void => {
     btnCapturar?.addEventListener('click', (e): void => {
         e.preventDefault();
+        
+        // Animar botão de captura
+        animateCaptureButton();
         
         if (!streamAtual) {
             showSecureNotification('Câmera não ativa.', 'error');
@@ -432,6 +457,9 @@ const setupSecureEventListeners = (): void => {
 
             const dataUrl = canvas.toDataURL('image/png', 0.9);
             salvarFoto(dataUrl);
+            
+            // Animar feedback de sucesso
+            animateCaptureSuccess();
         } catch (error) {
             console.error('Erro na captura:', error);
             showSecureNotification('Erro ao capturar foto.', 'error');
@@ -440,12 +468,15 @@ const setupSecureEventListeners = (): void => {
 
     btnAlternar?.addEventListener('click', (e): void => {
         e.preventDefault();
+        animateCameraSwitch();
         usandoCamFront = !usandoCamFront;
         iniciarCamera(usandoCamFront);
     });
 
     btnTema?.addEventListener('click', (e): void => {
         e.preventDefault();
+        
+        animateThemeChange();
         
         const body = document.body;
         const isDark = body.classList.contains('theme--dark');
@@ -463,29 +494,27 @@ const setupSecureEventListeners = (): void => {
         }
     });
 
+    // Modal é gerenciado pelas animações
     [btnAbrirGaleriaDesktop, btnAbrirGaleriaPreview].forEach(btn => {
         btn?.addEventListener('click', (e) => {
             e.preventDefault();
-            galleryModal?.showModal();
             renderizarGaleria();
         });
-    });
-
-    btnFecharModal?.addEventListener('click', (e): void => {
-        e.preventDefault();
-        galleryModal?.close();
     });
 };
 
 // Inicialização segura
 document.addEventListener('DOMContentLoaded', () => {
     try {
+        // Inicializar animações primeiro
+        initializeAnimations();
+        
         iniciarCamera(usandoCamFront);
         renderizarListaFiltros();
         renderizarPreview();
         setupSecureEventListeners();
         
-        console.log('Webcam Creative inicializado com segurança');
+        console.log('Webcam Creative inicializado com segurança e animações');
     } catch (error) {
         console.error('Erro na inicialização:', error);
         showSecureNotification('Erro na inicialização da aplicação.', 'error');

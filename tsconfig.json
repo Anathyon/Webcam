@@ -7,8 +7,11 @@
     "outDir": "./script_js",
     "strict": true,
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "declaration": false,
+    "sourceMap": false
   },
   "include": ["script_ts/**/*"],
   "exclude": ["node_modules", "script_js"]
