@@ -2,9 +2,19 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; font-src 'self' https://cdn.jsdelivr.net; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self';">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; font-src 'self' https://cdn.jsdelivr.net; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self';">
     <meta name="referrer" content="no-referrer">
+    
+    <!-- Mobile Optimization -->
+    <meta name="theme-color" content="#0a0a0d">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Webcam Creative">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <!-- Prevent zoom on input focus -->
+    <meta name="format-detection" content="telephone=no">
     <title>Webcam Creative</title>
     <link rel="icon" type="image/x-icon" href="/CSS/svg/camera.svg">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
@@ -27,7 +37,7 @@
         </nav>
         
         <div class="controls--mobile">
-            </div>
+        </div>
     </header>
 
     <main class="main-content">
@@ -36,6 +46,22 @@
             <div class="webcam-container">
                 <video id="webcam-video" class="webcam-container__media" autoplay></video>
                 <canvas id="webcam-canvas" class="webcam-container__media" style="display: none;"></canvas>
+                
+                <div class="recording-indicator" id="recording-indicator" style="display: none;">
+                    <span>GRAVANDO</span>
+                </div>
+                
+                <div class="recording-controls" id="recording-controls" style="display: none;">
+                    <div class="recording-timer" id="recording-timer">00:00</div>
+                    <div class="recording-buttons">
+                        <button class="recording-btn" id="btn-pause-recording" title="Pausar Gravação">
+                            <i class="bi bi-pause-fill"></i>
+                        </button>
+                        <button class="recording-btn recording-btn--stop" id="btn-stop-recording" title="Parar Gravação">
+                            <i class="bi bi-stop-fill"></i>
+                        </button>
+                    </div>
+                </div>
                 
                 <div class="webcam-overlay" id="webcam-overlay">
                     <p class="webcam-overlay__message">Nenhuma câmera foi encontrada. Conecte um dispositivo de vídeo e tente novamente.</p>
@@ -48,11 +74,13 @@
 
             <div class="controls--desktop">
                 <button class="button-action" id="btn-capturar" title="Capturar Foto"><i class="bi bi-camera"></i></button>
+                <button class="button-action" id="btn-gravar" title="Gravar Vídeo"><i class="bi bi-record-circle"></i></button>
                 <button class="button-action" id="btn-alternar" title="Alternar Câmera"><i class="bi bi-arrow-repeat"></i></button>
                 <button class="button-action" id="btn-modo-claro" title="Alternar Tema">
                     <i class="bi bi-sun" id="theme-icon"></i>
                 </button>
                 <button class="button-action" id="btn-abrir-galeria-desktop" title="Abrir Galeria"><i class="bi bi-images"></i></button>
+                <button class="button-action" id="btn-video-config" title="Configurar Vídeo"><i class="bi bi-gear"></i></button>
             </div>
         </section>
 
@@ -109,9 +137,106 @@
             <h2 class="modal__title">Minha galeria</h2>
             <p class="modal__description">Acompanhe e gerencie cada registro capturado durante sua sessão criativa.</p>
             
-            <div class="galeria-grid" id="galeria-grid">
-                </div>
+            <div class="gallery-tabs">
+                <button class="tab-btn active" id="tab-fotos" data-tab="fotos">
+                    <i class="bi bi-image"></i> Fotos (<span id="fotos-count">0</span>)
+                </button>
+                <button class="tab-btn" id="tab-videos" data-tab="videos">
+                    <i class="bi bi-play-circle"></i> Vídeos (<span id="videos-count">0</span>)
+                </button>
+            </div>
             
+            <div class="gallery-content">
+                <div class="gallery-grid" id="fotos-grid"></div>
+                <div class="gallery-grid" id="videos-grid" style="display: none;"></div>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog class="modal" id="media-preview-modal">
+        <button class="close" id="btn-fechar-preview"><i class="bi bi-x-lg"></i></button>
+        <div class="preview-content">
+            <div class="preview-media" id="preview-media"></div>
+            <div class="preview-info">
+                <h3 id="preview-title"></h3>
+                <p id="preview-date"></p>
+            </div>
+            <div class="preview-actions">
+                <button class="btn btn--secondary" id="btn-preview-download">
+                    <i class="bi bi-download"></i> Baixar
+                </button>
+                <button class="btn btn--secondary" id="btn-preview-share">
+                    <i class="bi bi-share"></i> Compartilhar
+                </button>
+                <button class="btn btn--danger" id="btn-preview-delete">
+                    <i class="bi bi-trash"></i> Deletar
+                </button>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog class="modal" id="video-config-modal">
+        <button class="close" id="btn-fechar-config-modal"><i class="bi bi-x-lg"></i></button>
+        <div class="modal-content">
+            <h2 class="modal__title">Configurações de Vídeo</h2>
+            <p class="modal__description">Personalize a qualidade e formato dos seus vídeos.</p>
+            
+            <div class="config-section">
+                <h3>Formato de Vídeo</h3>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="video-format" value="mp4" id="format-mp4" checked>
+                        <span class="radio-custom"></span>
+                        <div class="radio-content">
+                            <strong>MP4 (Recomendado)</strong>
+                            <small>Melhor compatibilidade, menor tamanho</small>
+                        </div>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="video-format" value="webm" id="format-webm">
+                        <span class="radio-custom"></span>
+                        <div class="radio-content">
+                            <strong>WebM (Nativo)</strong>
+                            <small>Processamento mais rápido</small>
+                        </div>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="config-section">
+                <h3>Qualidade</h3>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="video-quality" value="low" id="quality-low">
+                        <span class="radio-custom"></span>
+                        <div class="radio-content">
+                            <strong>Baixa (480p)</strong>
+                            <small>Menor tamanho de arquivo</small>
+                        </div>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="video-quality" value="medium" id="quality-medium" checked>
+                        <span class="radio-custom"></span>
+                        <div class="radio-content">
+                            <strong>Média (720p)</strong>
+                            <small>Equilíbrio ideal</small>
+                        </div>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="video-quality" value="high" id="quality-high">
+                        <span class="radio-custom"></span>
+                        <div class="radio-content">
+                            <strong>Alta (1080p)</strong>
+                            <small>Máxima qualidade</small>
+                        </div>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="config-actions">
+                <button class="btn btn--secondary" id="btn-reset-config">Restaurar Padrão</button>
+                <button class="btn btn--primary" id="btn-save-config">Salvar Configurações</button>
+            </div>
         </div>
     </dialog>
 
