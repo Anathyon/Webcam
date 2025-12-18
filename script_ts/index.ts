@@ -1,5 +1,4 @@
 // Webcam Creative - Código Seguro e Otimizado
-'use strict';
 
 // Importar animações simples
 import {
@@ -440,8 +439,7 @@ const renderizarGrid = (items: MediaItem[], grid: HTMLElement | null, type: 'fot
         fragment.appendChild(div);
     });
     
-    grid.innerHTML = '';
-    grid.appendChild(fragment);
+    grid.replaceChildren(fragment);
 };
 
 const createEmptyGridHTML = (type: 'foto' | 'video'): string => {
@@ -519,26 +517,6 @@ const formatDuration = (seconds: number): string => {
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
     return `${mins}:${secs.toString().padStart(2, '0')}`;
-};
-
-
-
-const createSecureButton = (iconClass: string, title: string, onClick: () => void): HTMLButtonElement => {
-    const button = document.createElement('button');
-    button.title = sanitizeText(title);
-    button.type = 'button';
-    
-    const icon = document.createElement('i');
-    icon.className = `bi ${iconClass}`;
-    button.appendChild(icon);
-    
-    button.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        onClick();
-    });
-    
-    return button;
 };
 
 const baixarFoto = (dataUrl: string): void => {
@@ -1158,8 +1136,7 @@ const renderizarListaFiltros = (): void => {
         fragment.appendChild(li);
     });
     
-    filterListUl.innerHTML = '';
-    filterListUl.appendChild(fragment);
+    filterListUl.replaceChildren(fragment);
     
     // Animar lista após renderização
     setTimeout(() => animateFilterList(), 50);
@@ -1326,41 +1303,6 @@ const setupTouchGestures = (): void => {
     });
 };
 
-// Otimizar renderização para mobile
-const optimizeForMobile = (): void => {
-    if (!isMobile()) return;
-    
-    // Reduzir qualidade de filtros em dispositivos mais fracos
-    const isLowEnd = navigator.hardwareConcurrency <= 2 || 
-                     /Android.*Chrome\/[0-5]/.test(navigator.userAgent);
-    
-    if (isLowEnd) {
-        document.documentElement.style.setProperty('--shadow', 'rgba(0,0,0,0.2)');
-        document.documentElement.style.setProperty('--transition', 'all 0.1s ease');
-    }
-    
-    // Lazy loading para galeria
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target as HTMLImageElement;
-                if (img.dataset.src) {
-                    img.src = img.dataset.src;
-                    img.removeAttribute('data-src');
-                    observer.unobserve(img);
-                }
-            }
-        });
-    });
-    
-    // Aplicar observer a imagens da galeria
-    document.addEventListener('DOMContentLoaded', () => {
-        document.querySelectorAll('img[data-src]').forEach(img => {
-            observer.observe(img);
-        });
-    });
-};
-
 // Event listeners seguros
 const setupSecureEventListeners = (): void => {
     btnCapturar?.addEventListener('click', (e): void => {
@@ -1397,6 +1339,15 @@ const setupSecureEventListeners = (): void => {
         }
     });
 
+    const finalizarSessaoGravacao = () => {
+        if (btnGravar) {
+            btnGravar.innerHTML = '<i class="bi bi-record-circle"></i>';
+            btnGravar.title = 'Gravar Vídeo';
+            btnGravar.classList.remove('recording-active');
+        }
+        hideRecordingControls();
+    };
+
     btnGravar?.addEventListener('click', (e): void => {
         e.preventDefault();
         
@@ -1404,7 +1355,6 @@ const setupSecureEventListeners = (): void => {
             showSecureNotification('Câmera não ativa.', 'error');
             return;
         }
-
         if (!isRecording) {
             iniciarGravacao();
             if (btnGravar) {
@@ -1414,11 +1364,6 @@ const setupSecureEventListeners = (): void => {
             }
         } else {
             pararGravacao();
-            if (btnGravar) {
-                btnGravar.innerHTML = '<i class="bi bi-record-circle"></i>';
-                btnGravar.title = 'Gravar Vídeo';
-                btnGravar.classList.remove('recording-active');
-            }
         }
     });
 
@@ -1438,12 +1383,7 @@ const setupSecureEventListeners = (): void => {
         e.preventDefault();
         
         if (isRecording) {
-            pararGravacao();
-            if (btnGravar) {
-                btnGravar.innerHTML = '<i class="bi bi-record-circle"></i>';
-                btnGravar.title = 'Gravar Vídeo';
-                btnGravar.classList.remove('recording-active');
-            }
+            pararGravacao().then(finalizarSessaoGravacao);
         }
     });
 
@@ -1617,56 +1557,9 @@ const setupSecureEventListeners = (): void => {
     });
 };
 
-const testRecordingSupport = (): void => {
-    console.log('=== TESTE DE SUPORTE DE GRAVAÇÃO ===');
-    console.log('MediaRecorder disponível:', typeof MediaRecorder !== 'undefined');
-    console.log('isTypeSupported disponível:', typeof MediaRecorder?.isTypeSupported === 'function');
-    
-    if (typeof MediaRecorder !== 'undefined' && typeof MediaRecorder.isTypeSupported === 'function') {
-        const codecsWithAudio = [
-            'video/webm;codecs=vp9,opus',
-            'video/webm;codecs=vp9',
-            'video/webm'
-        ];
-        
-        const codecsVideoOnly = [
-            'video/webm;codecs=vp8',
-            'video/webm',
-            'video/mp4;codecs=h264',
-            'video/mp4'
-        ];
-        
-        console.log('--- Codecs com áudio ---');
-        codecsWithAudio.forEach(codec => {
-            console.log(`${codec}: ${MediaRecorder.isTypeSupported(codec)}`);
-        });
-        
-        console.log('--- Codecs apenas vídeo ---');
-        codecsVideoOnly.forEach(codec => {
-            console.log(`${codec}: ${MediaRecorder.isTypeSupported(codec)}`);
-        });
-        
-        const selectedCodec = getSupportedMimeType(true);
-        console.log('Codec selecionado:', selectedCodec);
-    }
-    
-    // Testar suporte de vídeo HTML5
-    const testVideo = document.createElement('video');
-    console.log('--- Suporte de Vídeo HTML5 ---');
-    console.log('WebM:', testVideo.canPlayType('video/webm'));
-    console.log('WebM VP8:', testVideo.canPlayType('video/webm; codecs="vp8"'));
-    console.log('WebM VP9:', testVideo.canPlayType('video/webm; codecs="vp9"'));
-    console.log('MP4:', testVideo.canPlayType('video/mp4'));
-    
-    console.log('=== FIM DO TESTE ===');
-};
-
 // Inicialização segura
 document.addEventListener('DOMContentLoaded', () => {
     try {
-        // Testar suporte de gravação
-        testRecordingSupport();
-        
         // Carregar configurações de vídeo
         loadVideoConfig();
         
@@ -1681,7 +1574,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // Configurar otimizações mobile
         setupMobileOptimizations();
         setupTouchGestures();
-        optimizeForMobile();
         
         console.log('Webcam Creative inicializado com segurança e animações');
     } catch (error) {
