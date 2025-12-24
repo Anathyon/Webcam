@@ -709,20 +709,21 @@ body{
 }
 
 .recording-controls{
-    position:absolute;
-    bottom:2rem;
-    left:50%;
-    transform:translateX(-50%);
+    /* Position reset for new layout */
+    margin: 0 auto;
+    
     background:rgba(0,0,0,0.8);
     backdrop-filter:blur(10px);
-    border-radius:2rem;
+    border-radius:1rem;
     padding:1rem 2rem;
     display:flex;
-    flex-direction:column;
+    flex-direction:row; /* Horizontal layout */
+    justify-content: space-between; /* Space out timer and buttons */
     align-items:center;
     gap:1rem;
-    z-index:100;
+    z-index:90;
     border:1px solid rgba(255,255,255,0.2);
+    width: calc(100% - 3rem); /* Match canvas width (container padding is 1.5rem x 2) */
 }
 
 .recording-timer{

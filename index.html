@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; font-src 'self' https://cdn.jsdelivr.net; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self';">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; font-src 'self' https://cdn.jsdelivr.net; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self';">
     <meta name="referrer" content="no-referrer">
-    
+
     <!-- Mobile Optimization -->
     <meta name="theme-color" content="#0a0a0d">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Webcam Creative">
     <meta name="mobile-web-app-capable" content="yes">
-    
+
     <!-- Prevent zoom on input focus -->
     <meta name="format-detection" content="telephone=no">
     <title>Webcam Creative</title>
@@ -22,8 +25,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="./CSS/index.css">
 </head>
-<body class="theme--dark"> 
-    
+
+<body class="theme--dark">
+
     <header class="header">
         <div class="header__logo">
             <img src="/CSS/img/logo-dark.png" alt="Webcam Creative Logo" id="header-logo" class="header__logo-image">
@@ -37,36 +41,27 @@
             <li class="header__nav-item" id="nav-item-webcam">Webcam Online</li>
             <li class="header__nav-item" id="nav-item-filtros">Diversos Filtros</li>
         </nav>
-        
+
         <div class="controls--mobile">
         </div>
     </header>
 
     <main class="main-content">
         <section class="webcam-area">
-            
+
             <div class="webcam-container">
                 <video id="webcam-video" class="webcam-container__media" autoplay></video>
                 <canvas id="webcam-canvas" class="webcam-container__media" style="display: none;"></canvas>
-                
+
                 <div class="recording-indicator" id="recording-indicator" style="display: none;">
                     <span>GRAVANDO</span>
                 </div>
-                
-                <div class="recording-controls" id="recording-controls" style="display: none;">
-                    <div class="recording-timer" id="recording-timer">00:00</div>
-                    <div class="recording-buttons">
-                        <button class="recording-btn" id="btn-pause-recording" title="Pausar Gravação">
-                            <i class="bi bi-pause-fill"></i>
-                        </button>
-                        <button class="recording-btn recording-btn--stop" id="btn-stop-recording" title="Parar Gravação">
-                            <i class="bi bi-stop-fill"></i>
-                        </button>
-                    </div>
-                </div>
-                
+
+
+
                 <div class="webcam-overlay" id="webcam-overlay">
-                    <p class="webcam-overlay__message">Nenhuma câmera foi encontrada. Conecte um dispositivo de vídeo e tente novamente.</p>
+                    <p class="webcam-overlay__message">Nenhuma câmera foi encontrada. Conecte um dispositivo de vídeo e
+                        tente novamente.</p>
                     <div class="webcam-overlay__status-box">
                         <span class="webcam-overlay__status">SEM CÂMERA</span>
                         <span class="webcam-overlay__filter" id="filtro-status-overlay">FILTRO: NENHUM</span>
@@ -74,20 +69,37 @@
                 </div>
             </div>
 
+            <div class="recording-controls" id="recording-controls" style="display: none;">
+                <div class="recording-timer" id="recording-timer">00:00</div>
+                <div class="recording-buttons">
+                    <button class="recording-btn" id="btn-pause-recording" title="Pausar Gravação">
+                        <i class="bi bi-pause-fill"></i>
+                    </button>
+                    <button class="recording-btn recording-btn--stop" id="btn-stop-recording" title="Parar Gravação">
+                        <i class="bi bi-stop-fill"></i>
+                    </button>
+                </div>
+            </div>
+
             <div class="controls--desktop">
-                <button class="button-action" id="btn-capturar" title="Capturar Foto"><i class="bi bi-camera"></i></button>
-                <button class="button-action" id="btn-gravar" title="Gravar Vídeo"><i class="bi bi-record-circle"></i></button>
-                <button class="button-action" id="btn-alternar" title="Alternar Câmera"><i class="bi bi-arrow-repeat"></i></button>
+                <button class="button-action" id="btn-capturar" title="Capturar Foto"><i
+                        class="bi bi-camera"></i></button>
+                <button class="button-action" id="btn-gravar" title="Gravar Vídeo"><i
+                        class="bi bi-record-circle"></i></button>
+                <button class="button-action" id="btn-alternar" title="Alternar Câmera"><i
+                        class="bi bi-arrow-repeat"></i></button>
                 <button class="button-action" id="btn-modo-claro" title="Alternar Tema">
                     <i class="bi bi-sun" id="theme-icon"></i>
                 </button>
-                <button class="button-action" id="btn-abrir-galeria-desktop" title="Abrir Galeria"><i class="bi bi-images"></i></button>
-                <button class="button-action" id="btn-video-config" title="Configurar Vídeo"><i class="bi bi-gear"></i></button>
+                <button class="button-action" id="btn-abrir-galeria-desktop" title="Abrir Galeria"><i
+                        class="bi bi-images"></i></button>
+                <button class="button-action" id="btn-video-config" title="Configurar Vídeo"><i
+                        class="bi bi-gear"></i></button>
             </div>
         </section>
 
         <aside class="side-panel">
-            
+
             <div class="card card--status">
                 <h3 class="card__title">Painel rápido</h3>
                 <div class="status-grid">
@@ -111,34 +123,36 @@
                 <div class="gallery-preview" id="gallery-preview">
                     <i class="bi bi-image"></i>
                     <p>Nenhuma foto por aqui ainda</p>
-                    <p class="gallery-preview__hint">Capture momentos usando o botão principal para começar a preencher sua galeria.</p>
+                    <p class="gallery-preview__hint">Capture momentos usando o botão principal para começar a preencher
+                        sua galeria.</p>
                 </div>
             </div>
 
             <div class="card card--filters">
-                    <div class="card__header">
-                        <h3 class="card__title">Explorador de filtros</h3>
-                        <span class="card__count" id="filter-count">0/25</span>
-                    </div>
-                    <p class="card__description">Gire entre estilos visuais para obter o clima perfeito em cada clique.</p>
-                    
-                    <details class="filter-menu-details"> <summary class="filter-menu-summary">
+                <div class="card__header">
+                    <h3 class="card__title">Explorador de filtros</h3>
+                    <span class="card__count" id="filter-count">0/25</span>
+                </div>
+                <p class="card__description">Gire entre estilos visuais para obter o clima perfeito em cada clique.</p>
+
+                <details class="filter-menu-details">
+                    <summary class="filter-menu-summary">
                         Filtros disponíveis <i class="bi bi-chevron-down"></i>
                     </summary>
-                    
+
                     <ul class="filter-list" id="filter-list">
-                        </ul>
+                    </ul>
                 </details>
             </div>
-            </aside>
+        </aside>
     </main>
-    
+
     <dialog class="modal" id="gallery-modal">
         <button class="close" id="btn-fechar-modal"><i class="bi bi-x-lg"></i></button>
         <div class="modal-content">
             <h2 class="modal__title">Minha galeria</h2>
             <p class="modal__description">Acompanhe e gerencie cada registro capturado durante sua sessão criativa.</p>
-            
+
             <div class="gallery-tabs">
                 <button class="tab-btn active" id="tab-fotos" data-tab="fotos">
                     <i class="bi bi-image"></i> Fotos (<span id="fotos-count">0</span>)
@@ -147,7 +161,7 @@
                     <i class="bi bi-play-circle"></i> Vídeos (<span id="videos-count">0</span>)
                 </button>
             </div>
-            
+
             <div class="gallery-content">
                 <div class="gallery-grid" id="fotos-grid"></div>
                 <div class="gallery-grid" id="videos-grid" style="display: none;"></div>
@@ -182,7 +196,7 @@
         <div class="modal-content">
             <h2 class="modal__title">Configurações de Vídeo</h2>
             <p class="modal__description">Personalize a qualidade e formato dos seus vídeos.</p>
-            
+
             <div class="config-section">
                 <h3>Formato de Vídeo</h3>
                 <div class="radio-group">
@@ -204,7 +218,7 @@
                     </label>
                 </div>
             </div>
-            
+
             <div class="config-section">
                 <h3>Qualidade</h3>
                 <div class="radio-group">
@@ -234,7 +248,7 @@
                     </label>
                 </div>
             </div>
-            
+
             <div class="config-actions">
                 <button class="btn btn--secondary" id="btn-reset-config">Restaurar Padrão</button>
                 <button class="btn btn--primary" id="btn-save-config">Salvar Configurações</button>
@@ -257,4 +271,5 @@
         }
     </script>
 </body>
+
 </html>
